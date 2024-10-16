@@ -39,7 +39,7 @@ class _BuildScheduleState extends State<BuildSchedule> {
           BoxShadow(
             color: Colors.grey,
             blurRadius: 4.0,
-            offset: Offset(0, -2),
+            offset: Offset(0, -2,),
           ),
         ],
       ),
