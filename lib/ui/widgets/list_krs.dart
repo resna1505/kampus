@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:kampus/models/krs_model.dart';
 import 'package:kampus/shared/theme.dart';
 
 class ListKrs extends StatelessWidget {
-  final String title;
-  final String code;
-  final String sks;
-  final String time;
+  // final String title;
+  // final String code;
+  // final String sks;
+  // final String time;
+  final KrsModel krsMethod;
 
   const ListKrs({
     super.key,
-    required this.title,
-    required this.code,
-    required this.sks,
-    required this.time,
+    required this.krsMethod,
   });
 
   @override
@@ -28,7 +27,7 @@ class ListKrs extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            krsMethod.namamakul.toString(),
             style: blackTextStyle.copyWith(
               fontSize: 16,
             ),
@@ -36,21 +35,24 @@ class ListKrs extends StatelessWidget {
           Row(
             children: [
               Text(
-                code,
+                krsMethod.idmakul.toString(),
                 style: greyDarkTextStyle.copyWith(
                   fontSize: 16,
                 ),
               ),
-              Text(
-                sks,
-                style: greyDarkTextStyle.copyWith(
-                  fontSize: 14,
+              Expanded(
+                child: Text(
+                  ' - ${krsMethod.sksmakul}SKS',
+                  style: greyDarkTextStyle.copyWith(
+                    fontSize: 14,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               )
             ],
           ),
           Text(
-            time,
+            krsMethod.name?.toString() ?? '-',
             style: greyTextStyle.copyWith(
               fontSize: 12,
             ),

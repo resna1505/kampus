@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:kampus/models/campus_news_model.dart';
 import 'package:kampus/shared/theme.dart';
 
 class ListCampusNews extends StatelessWidget {
-  final String logo;
-  final String header;
-  final String mitra;
-  final String time;
+  // final String logo;
+  // final String header;
+  // final String mitra;
+  // final String time;
   final String img;
-  final String title;
-  final String subtitle;
+  // final String title;
+  // final String subtitle;
+  final CampusNewsModel campusNewsMethod;
   final VoidCallback? onTap;
 
   const ListCampusNews({
     super.key,
-    required this.logo,
-    required this.header,
-    required this.mitra,
-    required this.time,
-    this.img = 'assets/ic_news1.png',
-    required this.title,
-    required this.subtitle,
+    // required this.logo,
+    // required this.header,
+    // required this.mitra,
+    // required this.time,
+    this.img = 'assets/berita_kampus.jpg',
+    // required this.title,
+    // required this.subtitle,
+    required this.campusNewsMethod,
     this.onTap,
   });
 
@@ -40,8 +43,21 @@ class ListCampusNews extends StatelessWidget {
                 const Padding(
                   padding: EdgeInsets.only(left: 14),
                 ),
-                Text(
-                  logo,
+                Container(
+                  height: 30,
+                  width: 30,
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                    image: DecorationImage(
+                      image: AssetImage(
+                        'assets/logo_uniba.png',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   width: 14,
@@ -52,7 +68,7 @@ class ListCampusNews extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          header,
+                          'Universitas Batam',
                           style: blackTextStyle.copyWith(
                             fontSize: 12,
                             fontWeight: semiBold,
@@ -69,15 +85,15 @@ class ListCampusNews extends StatelessWidget {
                         )
                       ],
                     ),
+                    // Text(
+                    //   'mitra',
+                    //   style: blackTextStyle.copyWith(
+                    //     fontSize: 12,
+                    //     fontWeight: medium,
+                    //   ),
+                    // ),
                     Text(
-                      mitra,
-                      style: blackTextStyle.copyWith(
-                        fontSize: 12,
-                        fontWeight: medium,
-                      ),
-                    ),
-                    Text(
-                      time,
+                      campusNewsMethod.tanggal.toString(),
                       style: greyTextStyle.copyWith(
                         fontSize: 10,
                         fontWeight: medium,
@@ -110,17 +126,20 @@ class ListCampusNews extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    title,
+                    campusNewsMethod.judul.toString(),
                     style: blackTextStyle.copyWith(
                       fontSize: 14,
                       fontWeight: semiBold,
                     ),
+                    textAlign: TextAlign.left,
                   ),
                   const SizedBox(
                     height: 4,
                   ),
                   Text(
-                    subtitle,
+                    (campusNewsMethod.sinopsis?.length ?? 0) > 210
+                        ? campusNewsMethod.sinopsis!.substring(0, 210) + '...'
+                        : campusNewsMethod.sinopsis ?? '',
                     style: blackTextStyle.copyWith(
                       fontSize: 12,
                     ),

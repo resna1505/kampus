@@ -1,32 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:kampus/models/nilai_model.dart';
 import 'package:kampus/shared/theme.dart';
 
 class ListNilai extends StatelessWidget {
-  final String code;
-  final String sks;
-  final String title;
-  final String finalscore;
-  final String grade;
-  final int individu;
-  final int bimbingan;
-  final int laporan;
-  final int kehadiran;
-  final int prilaku;
-  final int kelompok;
+  final NilaiModel nilaiMethod;
 
   const ListNilai({
     super.key,
-    required this.code,
-    required this.sks,
-    required this.title,
-    required this.finalscore,
-    required this.grade,
-    required this.individu,
-    required this.bimbingan,
-    required this.laporan,
-    required this.kehadiran,
-    required this.prilaku,
-    required this.kelompok,
+    required this.nilaiMethod,
   });
 
   @override
@@ -55,7 +36,7 @@ class ListNilai extends StatelessWidget {
                   color: purpleColor,
                 ),
                 child: Text(
-                  code,
+                  nilaiMethod.idmakul.toString(),
                   style: whiteTextStyle.copyWith(
                     fontWeight: light,
                     fontSize: 14,
@@ -65,14 +46,17 @@ class ListNilai extends StatelessWidget {
               const SizedBox(
                 width: 8,
               ),
-              Text(
-                '$sks SKS',
-                style: blackTextStyle.copyWith(fontSize: 12),
+              Expanded(
+                child: Text(
+                  ': ${nilaiMethod.sksmakul} SKS',
+                  style: blackTextStyle.copyWith(fontSize: 12),
+                  overflow: TextOverflow.visible,
+                ),
               )
             ],
           ),
           Text(
-            title,
+            nilaiMethod.namamakul.toString(),
             style: blackTextStyle.copyWith(fontSize: 14),
           ),
           Row(
@@ -85,7 +69,7 @@ class ListNilai extends StatelessWidget {
                 ),
               ),
               Text(
-                ': $finalscore',
+                ': ${nilaiMethod.nilai}',
                 style: blackTextStyle.copyWith(fontSize: 14),
               )
             ],
@@ -99,9 +83,12 @@ class ListNilai extends StatelessWidget {
                   style: blackTextStyle.copyWith(fontSize: 14),
                 ),
               ),
-              Text(
-                ': $grade',
-                style: blackTextStyle.copyWith(fontSize: 14),
+              Expanded(
+                child: Text(
+                  ': ${nilaiMethod.simbol}',
+                  style: blackTextStyle.copyWith(fontSize: 14),
+                  overflow: TextOverflow.visible,
+                ),
               )
             ],
           ),
@@ -114,9 +101,12 @@ class ListNilai extends StatelessWidget {
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
-              Text(
-                ': $individu',
-                style: blackTextStyle.copyWith(fontSize: 12),
+              Expanded(
+                child: Text(
+                  ': ${nilaiMethod.name ?? '-'}',
+                  style: blackTextStyle.copyWith(fontSize: 12),
+                  overflow: TextOverflow.visible,
+                ),
               )
             ],
           ),
@@ -129,9 +119,12 @@ class ListNilai extends StatelessWidget {
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
-              Text(
-                ': $bimbingan',
-                style: blackTextStyle.copyWith(fontSize: 12),
+              Expanded(
+                child: Text(
+                  ': ${nilaiMethod.name ?? '-'}',
+                  style: blackTextStyle.copyWith(fontSize: 12),
+                  overflow: TextOverflow.visible,
+                ),
               )
             ],
           ),
@@ -144,9 +137,12 @@ class ListNilai extends StatelessWidget {
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
-              Text(
-                ': $laporan',
-                style: blackTextStyle.copyWith(fontSize: 12),
+              Expanded(
+                child: Text(
+                  ': ${nilaiMethod.name ?? '-'}',
+                  style: blackTextStyle.copyWith(fontSize: 12),
+                  overflow: TextOverflow.visible,
+                ),
               )
             ],
           ),
@@ -159,9 +155,12 @@ class ListNilai extends StatelessWidget {
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
-              Text(
-                ': $kehadiran',
-                style: blackTextStyle.copyWith(fontSize: 12),
+              Expanded(
+                child: Text(
+                  ': ${nilaiMethod.name ?? '-'}',
+                  style: blackTextStyle.copyWith(fontSize: 12),
+                  overflow: TextOverflow.visible,
+                ),
               )
             ],
           ),
@@ -174,9 +173,12 @@ class ListNilai extends StatelessWidget {
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
-              Text(
-                ': $prilaku',
-                style: blackTextStyle.copyWith(fontSize: 12),
+              Expanded(
+                child: Text(
+                  ': ${nilaiMethod.name ?? '-'}',
+                  style: blackTextStyle.copyWith(fontSize: 12),
+                  overflow: TextOverflow.visible,
+                ),
               )
             ],
           ),
@@ -189,9 +191,12 @@ class ListNilai extends StatelessWidget {
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
-              Text(
-                ': $kelompok',
-                style: blackTextStyle.copyWith(fontSize: 12),
+              Expanded(
+                child: Text(
+                  ': ${nilaiMethod.name ?? '-'}',
+                  style: blackTextStyle.copyWith(fontSize: 12),
+                  overflow: TextOverflow.visible,
+                ),
               )
             ],
           ),

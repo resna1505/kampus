@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kampus/blocs/campus_news/campus_news_bloc.dart';
 import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/list_campus_news.dart';
 
 class CampusNews extends StatelessWidget {
   const CampusNews({super.key});
+
+  Future<void> _refreshData(BuildContext context) async {
+    context.read<CampusNewsBloc>().add(CampusNewsGet());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,62 +24,32 @@ class CampusNews extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        children: [
-          ListCampusNews(
-            onTap: () {
-              Navigator.pushNamed(context, '/campus-news-detail');
-            },
-            logo: 'IMG',
-            header: 'Good News From Indonesia',
-            mitra: 'IPTEK',
-            time: '9 hour ago',
-            title:
-                'Alternatif Solusi di Negara Kepulauan, PT PAL dan UNHAN salurkan Rumah Apung',
-            subtitle:
-                'PT PAL dan UNHAN salurkan rumah apung untuk solusi masyarakat di negara kepulauan. Serah terima ini diberikan kepada masyarakat langsung.',
-          ),
-          const ListCampusNews(
-            logo: 'IMG',
-            header: 'Good News From Indonesia',
-            mitra: 'IPTEK',
-            time: '9 hour ago',
-            title:
-                'Alternatif Solusi di Negara Kepulauan, PT PAL dan UNHAN salurkan Rumah Apung',
-            subtitle:
-                'PT PAL dan UNHAN salurkan rumah apung untuk solusi masyarakat di negara kepulauan. Serah terima ini diberikan kepada masyarakat langsung.',
-          ),
-          const ListCampusNews(
-            logo: 'IMG',
-            header: 'Good News From Indonesia',
-            mitra: 'IPTEK',
-            time: '9 hour ago',
-            title:
-                'Alternatif Solusi di Negara Kepulauan, PT PAL dan UNHAN salurkan Rumah Apung',
-            subtitle:
-                'PT PAL dan UNHAN salurkan rumah apung untuk solusi masyarakat di negara kepulauan. Serah terima ini diberikan kepada masyarakat langsung.',
-          ),
-          const ListCampusNews(
-            logo: 'IMG',
-            header: 'Good News From Indonesia',
-            mitra: 'IPTEK',
-            time: '9 hour ago',
-            title:
-                'Alternatif Solusi di Negara Kepulauan, PT PAL dan UNHAN salurkan Rumah Apung',
-            subtitle:
-                'PT PAL dan UNHAN salurkan rumah apung untuk solusi masyarakat di negara kepulauan. Serah terima ini diberikan kepada masyarakat langsung.',
-          ),
-          const ListCampusNews(
-            logo: 'IMG',
-            header: 'Good News From Indonesia',
-            mitra: 'IPTEK',
-            time: '9 hour ago',
-            title:
-                'Alternatif Solusi di Negara Kepulauan, PT PAL dan UNHAN salurkan Rumah Apung',
-            subtitle:
-                'PT PAL dan UNHAN salurkan rumah apung untuk solusi masyarakat di negara kepulauan. Serah terima ini diberikan kepada masyarakat langsung.',
-          ),
-        ],
+      body: BlocProvider(
+        create: (context) => CampusNewsBloc()..add(CampusNewsGet()),
+        child: BlocBuilder<CampusNewsBloc, CampusNewsState>(
+          builder: (context, state) {
+            if (state is CampusNewsSuccess) {
+              return RefreshIndicator(
+                onRefresh: () => _refreshData(context),
+                child: ListView(
+                  children: state.campusnews.map((campusNewsMethod) {
+                    return ListCampusNews(
+                      campusNewsMethod: campusNewsMethod,
+                      onTap: () {
+                        Navigator.pushNamed(context, '/campus-news-detail',
+                            arguments: campusNewsMethod.idberita);
+                      },
+                    );
+                  }).toList(),
+                ),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
       ),
     );
   }

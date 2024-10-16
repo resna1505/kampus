@@ -6,10 +6,8 @@ Color blackColor = const Color(0xff14193F);
 Color greyColor = const Color(0xffA4A8AE);
 Color greySoftColor = const Color(0xffF4F4F4);
 Color greyDarkColor = const Color(0xff808080);
-
 Color redColor = const Color(0xffFB344F);
 Color greenColor = const Color(0xff41B983);
-
 Color purpleColor = const Color(0xff1265A8);
 Color blueSoftColor = const Color(0xff9CD5ED);
 Color blueDarkColor = const Color(0xff00AEEF);

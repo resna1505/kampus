@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kampus/shared/theme.dart';
+import 'package:kampus/models/khs_model.dart';
 
 class DataTableKHS extends StatelessWidget {
-  const DataTableKHS({super.key});
+  final List<KhsModel> khsList;
+
+  const DataTableKHS({
+    super.key,
+    required this.khsList,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,31 +54,31 @@ class DataTableKHS extends StatelessWidget {
           numeric: true,
         ),
       ],
-      rows: data.map(
+      rows: khsList.map(
         (item) {
           return DataRow(
             cells: [
               DataCell(
                 Text(
-                  item['matakuliah'] ?? '',
+                  item.namamakul ?? '',
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
               DataCell(
                 Text(
-                  item['sks'] ?? '',
+                  item.sksmakul.toString(),
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
               DataCell(
                 Text(
-                  item['nilai'] ?? '',
+                  item.bobot.toString(),
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
               DataCell(
                 Text(
-                  item['huruf'] ?? '',
+                  item.simbol ?? '',
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
@@ -83,34 +89,3 @@ class DataTableKHS extends StatelessWidget {
     );
   }
 }
-
-List<Map<String, String>> data = [
-  {
-    'matakuliah': 'PEMODELAN DAN SIMULASI SISTEM',
-    'sks': '3',
-    'nilai': '96.38',
-    'huruf': 'A '
-  },
-  {
-    'matakuliah': 'INTELEGENSIA BUATAN',
-    'sks': '4',
-    'nilai': '77.21',
-    'huruf': 'B+'
-  },
-  {
-    'matakuliah': 'FINAL PROJECT SOFTWARE',
-    'sks': '3',
-    'nilai': '94.05',
-    'huruf': 'A '
-  },
-  {'matakuliah': 'KERJA PRAKTEK', 'sks': '2', 'nilai': '50.02', 'huruf': 'A '},
-  {
-    'matakuliah': 'ANALISA DAN PERANCANGAN',
-    'sks': '1',
-    'nilai': '68.02',
-    'huruf': 'B+'
-  },
-  {'matakuliah': 'MANAJEMEN UMUM', 'sks': '3', 'nilai': '85.00', 'huruf': 'A '},
-  {'matakuliah': 'METODE NUMERIK', 'sks': '3', 'nilai': '85.00', 'huruf': 'A '},
-  {'matakuliah': 'STRUKTUR DATA', 'sks': '4', 'nilai': '78.21', 'huruf': 'B+'},
-];

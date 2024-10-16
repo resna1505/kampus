@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/information_detail.dart';
 
@@ -7,6 +9,8 @@ class CampusNewsDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final campusNewsId = ModalRoute.of(context)?.settings.arguments as String;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.5,
@@ -18,17 +22,39 @@ class CampusNewsDetail extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        children: const [
-          InformationDetail(
-            title:
-                'Samsung kembangkan jaringan 6G yang sangat canggih dan inovatif',
-            from: 'Samsung',
-            subtitle:
-                'Jakarta (ANTARA) - Samsung Electronics Co mengatakan bahwa organisasi penelitian dan pengembangan Samsung Research America (SRA) telah bermitra dengan Universitas Princeton di Amerika Serikat untuk bersama-sama mengembangkan teknologi jaringan 6G generasi berikutnya.\n \nMelalui kolaborasi ini, SRA akan menjadi anggota pendiri "Program Afiliasi Perusahaan Inisiatif NextG" Universitas Princeton, yang bertujuan untuk mempelopori penelitian dan pengembangan dalam teknologi 6G, kata Samsung Electronics.',
-          )
-        ],
+      body: FutureBuilder(
+        future: fetchCampusNewsDetail(campusNewsId),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Error loading data'));
+          } else {
+            final newsDetail = snapshot.data;
+            return ListView(
+              children: [
+                InformationDetail(
+                  title: newsDetail['JUDUL'],
+                  from: newsDetail['IDUSER'],
+                  subtitle: newsDetail['RINCIAN'],
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
+  }
+
+  Future<dynamic> fetchCampusNewsDetail(String id) async {
+    final url =
+        'https://ams-api.univbatam.ac.id/index.php/mahasiswa/detailpengumuman/$id';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to load news detail');
+    }
   }
 }

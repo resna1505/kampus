@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:kampus/models/campus_news_model.dart';
 import 'package:kampus/shared/theme.dart';
 
 class HomeCampusNews extends StatelessWidget {
-  final String imgUrl;
-  final String title;
-  final String subtitle;
+  // final String imgUrl;
+  // final String title;
+  // final String subtitle;
+  final CampusNewsModel campusNewsMethod;
   final VoidCallback? onTap;
 
   const HomeCampusNews({
     super.key,
-    required this.imgUrl,
-    required this.title,
-    required this.subtitle,
+    // required this.imgUrl,
+    // required this.title,
+    // required this.subtitle,
+    required this.campusNewsMethod,
     this.onTap,
   });
 
@@ -22,7 +25,7 @@ class HomeCampusNews extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(5),
         width: 230,
-        height: 250,
+        height: 280,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: whiteColor,
@@ -38,14 +41,14 @@ class HomeCampusNews extends StatelessWidget {
             Container(
               height: 130,
               width: 250,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(8),
                   topRight: Radius.circular(8),
                 ),
                 image: DecorationImage(
                   image: AssetImage(
-                    imgUrl,
+                    'assets/berita_kampus.jpg',
                   ),
                   fit: BoxFit.cover,
                 ),
@@ -60,7 +63,7 @@ class HomeCampusNews extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    campusNewsMethod.judul.toString(),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 12,
@@ -70,12 +73,14 @@ class HomeCampusNews extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    subtitle,
-                    style: const TextStyle(
+                    (campusNewsMethod.sinopsis?.length ?? 0) > 130
+                        ? campusNewsMethod.sinopsis!.substring(0, 130) + '...'
+                        : campusNewsMethod.sinopsis ?? '',
+                    style: blackTextStyle.copyWith(
                       fontSize: 10,
                     ),
                     textAlign: TextAlign.justify,
-                  )
+                  ),
                 ],
               ),
             ),

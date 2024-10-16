@@ -10,7 +10,7 @@ class InformationDetail extends StatelessWidget {
 
   const InformationDetail({
     super.key,
-    this.img = 'assets/ic_news1.png',
+    this.img = 'assets/berita_kampus.jpg',
     required this.title,
     required this.from,
     required this.subtitle,
