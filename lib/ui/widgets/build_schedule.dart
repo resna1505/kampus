@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:kampus/blocs/schedule/schedule_bloc.dart';
 import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/list_schedule.dart';
@@ -14,14 +15,8 @@ class BuildSchedule extends StatefulWidget {
 }
 
 class _BuildScheduleState extends State<BuildSchedule> {
-  String selectedDay = 'Wed';
-  DateTime? selectedDate = DateTime(2024, 10, 16);
-
-  // void showDataForDay(String day) {
-  //   setState(() {
-  //     selectedDay = day;
-  //   });
-  // }
+  String selectedDay = DateFormat('E').format(DateTime.now());
+  DateTime? selectedDate = DateTime.now();
 
   void showDataForDate(DateTime date, String day) {
     setState(() {
