@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kampus/auth_provider.dart';
 import 'package:kampus/blocs/auth/auth_bloc.dart';
 import 'package:kampus/models/sign_in_form_model.dart';
 import 'package:kampus/shared/shared_methods.dart';
 import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/buttons.dart';
 import 'package:kampus/ui/widgets/forms.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -42,6 +44,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final auhtProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       backgroundColor: lightBackgroundColor,
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -111,9 +114,8 @@ class _LoginPageState extends State<LoginPage> {
                     margin: const EdgeInsets.symmetric(horizontal: 5),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: _currentPage == index
-                          ? blueDarkColor // Warna saat halaman aktif
-                          : blueSoftColor, // Warna default
+                      color:
+                          _currentPage == index ? blueDarkColor : blueSoftColor,
                     ),
                   );
                 }),
@@ -298,6 +300,10 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               );
+                          auhtProvider.signIn(
+                            emailController.text,
+                            passwordController.text,
+                          );
                         } else {
                           showCustomSnackbar(
                               context, 'Semua Field harus di isi');

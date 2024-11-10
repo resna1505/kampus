@@ -246,7 +246,7 @@ class _KHSPageState extends State<KHSPage> {
                 ),
               );
             }
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),

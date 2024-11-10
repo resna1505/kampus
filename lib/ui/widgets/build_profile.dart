@@ -40,64 +40,64 @@ class BuildProfile extends StatelessWidget {
                   ],
                 ),
                 const Spacer(),
-                Row(
-                  children: [
-                    // Container(
-                    //   width: 24,
-                    //   height: 24,
-                    //   decoration: const BoxDecoration(
-                    //     shape: BoxShape.rectangle,
-                    //     image: DecorationImage(
-                    //       image: AssetImage(
-                    //         'assets/img_profile.png',
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    // const SizedBox(
-                    //   width: 16,
-                    // ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/notification-mahasiswa');
-                      },
-                      child: Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: purpleColor,
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: Icon(
-                          Icons.notifications_none,
-                          color: whiteColor,
-                          size: 18,
-                        ),
-                      ),
-                    ),
-                    // const SizedBox(
-                    //   width: 16,
-                    // ),
-                    // Container(
-                    //   width: 24,
-                    //   height: 24,
-                    //   decoration: BoxDecoration(
-                    //     shape: BoxShape.rectangle,
-                    //     color: greenColor,
-                    //     borderRadius: BorderRadius.circular(4.0),
-                    //   ),
-                    //   child: Icon(
-                    //     Icons.qr_code_scanner,
-                    //     color: whiteColor,
-                    //     size: 18,
-                    //   ),
-                    // ),
-                  ],
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
+                // Row(
+                //   children: [
+                //     Container(
+                //       width: 24,
+                //       height: 24,
+                //       decoration: const BoxDecoration(
+                //         shape: BoxShape.rectangle,
+                //         image: DecorationImage(
+                //           image: AssetImage(
+                //             'assets/img_profile.png',
+                //           ),
+                //         ),
+                //       ),
+                //     ),
+                //     const SizedBox(
+                //       width: 16,
+                //     ),
+                //     GestureDetector(
+                //       onTap: () {
+                //         Navigator.pushNamed(context, '/notification-mahasiswa');
+                //       },
+                //       child: Container(
+                //         width: 24,
+                //         height: 24,
+                //         decoration: BoxDecoration(
+                //           shape: BoxShape.rectangle,
+                //           color: purpleColor,
+                //           borderRadius: BorderRadius.circular(4.0),
+                //         ),
+                //         child: Icon(
+                //           Icons.notifications_none,
+                //           color: whiteColor,
+                //           size: 18,
+                //         ),
+                //       ),
+                //     ),
+                //     const SizedBox(
+                //       width: 16,
+                //     ),
+                //     Container(
+                //       width: 24,
+                //       height: 24,
+                //       decoration: BoxDecoration(
+                //         shape: BoxShape.rectangle,
+                //         color: greenColor,
+                //         borderRadius: BorderRadius.circular(4.0),
+                //       ),
+                //       child: Icon(
+                //         Icons.qr_code_scanner,
+                //         color: whiteColor,
+                //         size: 18,
+                //       ),
+                //     ),
+                //   ],
+                // ),
+                // const SizedBox(
+                //   width: 16,
+                // ),
               ],
             ),
           );

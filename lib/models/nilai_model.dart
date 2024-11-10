@@ -7,8 +7,12 @@ class NilaiModel {
   final String? sksmakul;
   final String? simbol;
   final String? nilai;
-  final String? name;
-  final String? tugasindividu;
+  final String? kehadiran1;
+  final String? tugas1;
+  final String? uts;
+  final String? kehadiran2;
+  final String? tugas2;
+  final String? uas;
 
   NilaiModel({
     this.tahun,
@@ -19,20 +23,28 @@ class NilaiModel {
     this.sksmakul,
     this.simbol,
     this.nilai,
-    this.name,
-    this.tugasindividu,
+    this.kehadiran1,
+    this.tugas1,
+    this.uts,
+    this.kehadiran2,
+    this.tugas2,
+    this.uas,
   });
 
   factory NilaiModel.fromJson(Map<String, dynamic> json) => NilaiModel(
         tahun: json['TAHUN'],
-        namamakul: json['NAMAMAKUL'],
         semester: json['SEMESTER'],
         idmakul: json['IDMAKUL'],
         semestermakul: json['SEMESTERMAKUL'],
         sksmakul: json['SKSMAKUL'],
-        simbol: json['SIMBOL'],
+        namamakul: json['NAMAMAKUL'],
         nilai: json['NILAI'],
-        name: json['name'],
-        tugasindividu: json['tugasindividu'],
+        simbol: json['SIMBOL'],
+        kehadiran1: json['KEHADIRAN_1'],
+        tugas1: json['TUGAS_1'],
+        uts: json['UTS'],
+        kehadiran2: json['KEHADIRAN_2'],
+        tugas2: json['TUGAS_2'],
+        uas: json['UAS'],
       );
 }

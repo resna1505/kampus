@@ -19,6 +19,27 @@ class AbsenceBloc extends Bloc<AbsenceEvent, AbsenceState> {
           emit(AbsenceFailed(e.toString()));
         }
       }
+
+      if (event is ConfirmAbsence) {
+        try {
+          if (state is AbsenceSuccess) {
+            // final updatedUser = (state as AbsenceSuccess).absence.copyWith(
+            //       password: event.idMakul,
+            //     );
+
+            emit(AbsenceLoading());
+
+            await AbsenceService().confirmAbsence(
+              event.idMakul,
+              event.idRuangan,
+            );
+
+            emit(AbsenceSuccess((state as AbsenceSuccess).absence));
+          }
+        } catch (e) {
+          emit(AbsenceFailed(e.toString()));
+        }
+      }
     });
   }
 }

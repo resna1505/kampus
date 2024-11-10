@@ -100,29 +100,40 @@ class _BuildAbsenceState extends State<BuildAbsence> {
                     return HomeToDo(
                       absenceMethod: absenceMethod,
                       onTap: () async {
-                        var permissionStatus = await Permission.camera.status;
-                        if (permissionStatus.isDenied) {
-                          permissionStatus = await Permission.camera.request();
-                        }
-                        if (permissionStatus == PermissionStatus.granted) {
-                          String? cameraScanResult = await scanner.scan();
-
-                          if (cameraScanResult != null &&
-                              cameraScanResult.isNotEmpty) {
-                            Navigator.pushNamed(
-                              context,
-                              '/confirm-absent',
-                              arguments: {
-                                'scanResult': cameraScanResult,
-                                'idmakul': absenceMethod.idmakul,
-                              },
-                            );
-                          } else {
-                            showCustomSnackbar(
-                              context,
-                              'Hasil scan tidak valid. Silakan coba lagi.',
-                            );
+                        if (absenceMethod.statusabsen == 0) {
+                          var permissionStatus = await Permission.camera.status;
+                          if (permissionStatus.isDenied) {
+                            permissionStatus =
+                                await Permission.camera.request();
                           }
+                          if (permissionStatus == PermissionStatus.granted) {
+                            String? cameraScanResult = await scanner.scan();
+
+                            if (cameraScanResult != null &&
+                                cameraScanResult.isNotEmpty) {
+                              Navigator.pushNamed(
+                                context,
+                                '/confirm-absent',
+                                arguments: {
+                                  'namamakul': absenceMethod.namamakul,
+                                  'idmakul': absenceMethod.idmakul,
+                                  'idruangan': cameraScanResult,
+                                  'semester': absenceMethod.semester,
+                                  'tahun': absenceMethod.tahun,
+                                },
+                              );
+                            } else {
+                              showCustomSnackbar(
+                                context,
+                                'Hasil scan tidak valid. Silakan coba lagi.',
+                              );
+                            }
+                          }
+                        } else {
+                          showCustomSnackbar(
+                            context,
+                            'Anda sudah absen',
+                          );
                         }
                       },
                     );

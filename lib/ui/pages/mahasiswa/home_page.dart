@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kampus/chat_provider.dart';
+import 'package:kampus/search_screen.dart';
 import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/build_absence.dart';
 import 'package:kampus/ui/widgets/build_academy.dart';
@@ -7,6 +11,8 @@ import 'package:kampus/ui/widgets/build_campus_news.dart';
 import 'package:kampus/ui/widgets/build_explore.dart';
 import 'package:kampus/ui/widgets/build_profile.dart';
 import 'package:kampus/ui/widgets/build_schedule.dart';
+import 'package:kampus/ui/widgets/chat_tile.dart';
+import 'package:provider/provider.dart';
 
 class HomePageMahasiswa extends StatefulWidget {
   const HomePageMahasiswa({super.key});
@@ -19,8 +25,47 @@ class _HomePageMahasiswaState extends State<HomePageMahasiswa> {
   int _currentIndex = 0;
   String qrResult = "";
 
+  final _auth = FirebaseAuth.instance;
+  User? loggedInUser;
+
+  void initState() {
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    // try {
+    final user = _auth.currentUser;
+    if (user != null) {
+      loggedInUser = user;
+    }
+    // } catch (e) {
+    //   print(e);
+    // }
+  }
+
+  Future<Map<String, dynamic>> _fetchChatData(String chatId) async {
+    final chatDoc =
+        await FirebaseFirestore.instance.collection('chats').doc(chatId).get();
+    final chatData = chatDoc.data();
+    final users = chatData!['users'] as List<dynamic>?;
+    final receiverId = users!.firstWhere((id) => id != loggedInUser!.uid);
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(receiverId)
+        .get();
+    final userData = userDoc.data()!;
+    return {
+      'chatId': chatId,
+      'lastMessage': chatData['lastMessage'] ?? 'No messages yet',
+      'timestamp': chatData['timestamp']?.toDate() ?? DateTime.now(),
+      'userData': userData,
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
+    final chatProvider = Provider.of<ChatProvider>(context);
     return Scaffold(
       backgroundColor: lightBackgroundColor,
       bottomNavigationBar: BottomAppBar(
@@ -120,7 +165,90 @@ class _HomePageMahasiswaState extends State<HomePageMahasiswa> {
             const BuildAbsence(),
           ],
           if (_currentIndex == 3) ...[
-            buildChats(context),
+            WillPopScope(
+              onWillPop: () async => true,
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color: greyDarkColor,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 16,
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Chats',
+                          style: blackTextStyle.copyWith(
+                              fontSize: 22, fontWeight: bold),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: loggedInUser != null
+                            ? chatProvider.getChats(loggedInUser!.uid)
+                            : const Stream.empty(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+
+                          final chatDocs = snapshot.data!.docs;
+
+                          return FutureBuilder<List<Map<String, dynamic>>>(
+                            future: Future.wait(
+                              chatDocs.map(
+                                (chatDoc) async {
+                                  final chatData =
+                                      await _fetchChatData(chatDoc.id);
+                                  return chatData;
+                                },
+                              ),
+                            ),
+                            builder: (context, snapshot) {
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+
+                              final chatDataList = snapshot.data!;
+
+                              return ListView.builder(
+                                itemCount: chatDataList.length,
+                                itemBuilder: (context, index) {
+                                  final chatData = chatDataList[index];
+
+                                  return ChatTile(
+                                    chatId: chatData['chatId'],
+                                    lastMessage: chatData['lastMessage'],
+                                    timestamp: chatData['timestamp'],
+                                    receiverData: chatData['userData'],
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
           if (_currentIndex == 4) ...[
             const BuildAccounts(),
@@ -128,66 +256,22 @@ class _HomePageMahasiswaState extends State<HomePageMahasiswa> {
           ],
         ],
       ),
+      floatingActionButton: _currentIndex == 3
+          ? FloatingActionButton(
+              backgroundColor: blueDarkColor,
+              foregroundColor: whiteColor,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SearchScreen(),
+                  ),
+                );
+              },
+              child: const Icon(Icons.search),
+            )
+          : null,
       // body: tabs[_currentIndex],
-    );
-  }
-
-  Widget buildChats(context) {
-    return Column(
-      children: [
-        Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: greySoftColor,
-                  width: 1,
-                ),
-              ),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 32,
-                vertical: 15,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Chat',
-                    style: blackTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: semiBold,
-                    ),
-                  ),
-                  Icon(
-                    Icons.chat_outlined,
-                    color: purpleColor,
-                    size: 18,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(
-                horizontal: 24,
-                vertical: 8,
-              ),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'Search chat',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(
-                      color: purpleColor,
-                    ),
-                  ),
-                  contentPadding: const EdgeInsets.all(12),
-                ),
-              ),
-            ),
-          ],
-        )
-      ],
     );
   }
 

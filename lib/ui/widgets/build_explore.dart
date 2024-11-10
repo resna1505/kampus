@@ -161,7 +161,7 @@ class BuildExplore extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'IP yang di peroleh di semester 5',
+                          'IP yang di peroleh di semester ${state.indeksprestasi.semester.toString()} ',
                           style: blueTextStyle.copyWith(
                             fontSize: 13,
                           ),

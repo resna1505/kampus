@@ -106,7 +106,7 @@ class HomeToDo extends StatelessWidget {
                           height: 8,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: (absenceMethod.namamakul == 1)
+                            color: (absenceMethod.statusabsen == 1)
                                 ? whiteColor
                                 : redColor,
                           ),

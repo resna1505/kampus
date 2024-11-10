@@ -25,4 +25,31 @@ class AbsenceService {
       rethrow;
     }
   }
+
+  Future<void> confirmAbsence(String idmakul, String idruangan) async {
+    try {
+      final token = await AuthService().getToken();
+      final idmhs = await AuthService().getIdMahasiswa();
+      final res = await http.post(
+        Uri.parse(
+          '$baseUrl/mahasiswa/postabsen',
+        ),
+        body: {
+          'id': idmhs,
+          'idmakul': idmakul,
+          'idruangan': idruangan,
+          'tanggal': '2024-10-13'
+        },
+        headers: {
+          'Authorization': token,
+        },
+      );
+
+      if (res.statusCode != 200) {
+        throw jsonDecode(res.body)['message'];
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

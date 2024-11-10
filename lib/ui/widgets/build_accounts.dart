@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kampus/auth_provider.dart';
 import 'package:kampus/blocs/auth/auth_bloc.dart';
 import 'package:kampus/shared/shared_methods.dart';
 import 'package:kampus/shared/theme.dart';
+import 'package:provider/provider.dart';
 
 class BuildAccounts extends StatelessWidget {
   const BuildAccounts({super.key});
 
   @override
   Widget build(context) {
+    final auhtProvider = Provider.of<AuthProvider>(context);
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthFailed) {
@@ -125,6 +128,7 @@ class BuildAccounts extends StatelessWidget {
                       onTap: () {
                         // Navigator.pushNamed(context, '/login-page');
                         context.read<AuthBloc>().add(AuthLogout());
+                        auhtProvider.signOut();
                       },
                       child: Container(
                         padding: const EdgeInsets.all(12),

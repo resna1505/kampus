@@ -18,6 +18,33 @@ class _BuildScheduleState extends State<BuildSchedule> {
   String selectedDay = DateFormat('E').format(DateTime.now());
   DateTime? selectedDate = DateTime.now();
 
+  late DateTime formattedMonday;
+  late DateTime formattedTuesday;
+  late DateTime formattedWednesday;
+  late DateTime formattedThursday;
+  late DateTime formattedFriday;
+
+  @override
+  void initState() {
+    super.initState();
+
+    DateTime now = DateTime.now();
+    int mon = now.weekday - DateTime.monday;
+    formattedMonday = now.subtract(Duration(days: mon));
+
+    int tue = now.weekday - DateTime.tuesday;
+    formattedTuesday = now.subtract(Duration(days: tue));
+
+    int wed = now.weekday - DateTime.wednesday;
+    formattedWednesday = now.subtract(Duration(days: wed));
+
+    int thu = now.weekday - DateTime.thursday;
+    formattedThursday = now.subtract(Duration(days: thu));
+
+    int fri = now.weekday - DateTime.friday;
+    formattedFriday = now.subtract(Duration(days: fri));
+  }
+
   void showDataForDate(DateTime date, String day) {
     setState(() {
       selectedDate = date;
@@ -39,7 +66,10 @@ class _BuildScheduleState extends State<BuildSchedule> {
           BoxShadow(
             color: Colors.grey,
             blurRadius: 4.0,
-            offset: Offset(0, -2,),
+            offset: Offset(
+              0,
+              -2,
+            ),
           ),
         ],
       ),
@@ -139,8 +169,7 @@ class _BuildScheduleState extends State<BuildSchedule> {
                     child: Row(
                       children: [
                         InkWell(
-                          onTap: () =>
-                              showDataForDate(DateTime(2024, 10, 14), 'Mon'),
+                          onTap: () => showDataForDate(formattedMonday, 'Mon'),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 11,
@@ -149,8 +178,7 @@ class _BuildScheduleState extends State<BuildSchedule> {
                             decoration: BoxDecoration(
                               color: selectedDay == 'Mon'
                                   ? purpleColor
-                                  : Colors
-                                      .transparent, // Warna berubah jika dipilih
+                                  : Colors.transparent,
                               borderRadius: BorderRadius.circular(100),
                             ),
                             child: Text(
@@ -169,8 +197,7 @@ class _BuildScheduleState extends State<BuildSchedule> {
                         ),
                         const Spacer(flex: 1),
                         InkWell(
-                          onTap: () =>
-                              showDataForDate(DateTime(2024, 10, 15), 'Tue'),
+                          onTap: () => showDataForDate(formattedTuesday, 'Tue'),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 11,
@@ -199,7 +226,7 @@ class _BuildScheduleState extends State<BuildSchedule> {
                         const Spacer(flex: 1),
                         InkWell(
                           onTap: () =>
-                              showDataForDate(DateTime(2024, 10, 16), 'Wed'),
+                              showDataForDate(formattedWednesday, 'Wed'),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 11,
@@ -228,14 +255,14 @@ class _BuildScheduleState extends State<BuildSchedule> {
                         const Spacer(flex: 1),
                         InkWell(
                           onTap: () =>
-                              showDataForDate(DateTime(2024, 10, 17), 'Thurs'),
+                              showDataForDate(formattedThursday, 'Thu'),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 11,
                               vertical: 3,
                             ),
                             decoration: BoxDecoration(
-                              color: selectedDay == 'Thurs'
+                              color: selectedDay == 'Thu'
                                   ? purpleColor
                                   : Colors
                                       .transparent, // Warna berubah jika dipilih
@@ -243,7 +270,7 @@ class _BuildScheduleState extends State<BuildSchedule> {
                             ),
                             child: Text(
                               'Kamis',
-                              style: selectedDay == 'Thurs'
+                              style: selectedDay == 'Thu'
                                   ? whiteTextStyle.copyWith(
                                       fontWeight: light,
                                       fontSize: 12,
@@ -257,8 +284,7 @@ class _BuildScheduleState extends State<BuildSchedule> {
                         ),
                         const Spacer(flex: 1),
                         InkWell(
-                          onTap: () =>
-                              showDataForDate(DateTime(2024, 10, 18), 'Fri'),
+                          onTap: () => showDataForDate(formattedFriday, 'Fri'),
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 11,
@@ -659,14 +685,14 @@ class _BuildScheduleState extends State<BuildSchedule> {
                         const Spacer(flex: 1),
                         InkWell(
                           onTap: () => showDataForDate(DateTime(2024, 10, 14),
-                              'Thurs'), // Ketika diklik "Thurs"
+                              'Thu'), // Ketika diklik "Thu"
                           child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 11,
                               vertical: 3,
                             ),
                             decoration: BoxDecoration(
-                              color: selectedDay == 'Thurs'
+                              color: selectedDay == 'Thu'
                                   ? purpleColor
                                   : Colors
                                       .transparent, // Warna berubah jika dipilih
@@ -674,7 +700,7 @@ class _BuildScheduleState extends State<BuildSchedule> {
                             ),
                             child: Text(
                               'Kamis',
-                              style: selectedDay == 'Thurs'
+                              style: selectedDay == 'Thu'
                                   ? whiteTextStyle.copyWith(
                                       fontWeight: light,
                                       fontSize: 12,

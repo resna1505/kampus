@@ -97,13 +97,13 @@ class ListNilai extends StatelessWidget {
               SizedBox(
                 width: 200,
                 child: Text(
-                  'TUGAS INDIVIDU ',
+                  'KEHADIRAN 1 ',
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
               Expanded(
                 child: Text(
-                  ': ${nilaiMethod.name ?? '-'}',
+                  ': ${nilaiMethod.kehadiran1 ?? '-'}',
                   style: blackTextStyle.copyWith(fontSize: 12),
                   overflow: TextOverflow.visible,
                 ),
@@ -115,13 +115,13 @@ class ListNilai extends StatelessWidget {
               SizedBox(
                 width: 200,
                 child: Text(
-                  'BIMBINGAN ',
+                  'TUGAS 1 ',
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
               Expanded(
                 child: Text(
-                  ': ${nilaiMethod.name ?? '-'}',
+                  ': ${nilaiMethod.tugas1 ?? '-'}',
                   style: blackTextStyle.copyWith(fontSize: 12),
                   overflow: TextOverflow.visible,
                 ),
@@ -133,13 +133,13 @@ class ListNilai extends StatelessWidget {
               SizedBox(
                 width: 200,
                 child: Text(
-                  'LAPORAN PRAKTIKUM ',
+                  'UTS ',
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
               Expanded(
                 child: Text(
-                  ': ${nilaiMethod.name ?? '-'}',
+                  ': ${nilaiMethod.uts ?? '-'}',
                   style: blackTextStyle.copyWith(fontSize: 12),
                   overflow: TextOverflow.visible,
                 ),
@@ -151,13 +151,13 @@ class ListNilai extends StatelessWidget {
               SizedBox(
                 width: 200,
                 child: Text(
-                  'KEHADIRAN ',
+                  'KEHADIRAN 2 ',
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
               Expanded(
                 child: Text(
-                  ': ${nilaiMethod.name ?? '-'}',
+                  ': ${nilaiMethod.kehadiran2 ?? '-'}',
                   style: blackTextStyle.copyWith(fontSize: 12),
                   overflow: TextOverflow.visible,
                 ),
@@ -169,13 +169,13 @@ class ListNilai extends StatelessWidget {
               SizedBox(
                 width: 200,
                 child: Text(
-                  'PRILAKU ',
+                  'TUGAS 2 ',
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
               Expanded(
                 child: Text(
-                  ': ${nilaiMethod.name ?? '-'}',
+                  ': ${nilaiMethod.tugas2 ?? '-'}',
                   style: blackTextStyle.copyWith(fontSize: 12),
                   overflow: TextOverflow.visible,
                 ),
@@ -187,13 +187,13 @@ class ListNilai extends StatelessWidget {
               SizedBox(
                 width: 200,
                 child: Text(
-                  'TUGAS KELOMPOK ',
+                  'UAS ',
                   style: blackTextStyle.copyWith(fontSize: 12),
                 ),
               ),
               Expanded(
                 child: Text(
-                  ': ${nilaiMethod.name ?? '-'}',
+                  ': ${nilaiMethod.uas ?? '-'}',
                   style: blackTextStyle.copyWith(fontSize: 12),
                   overflow: TextOverflow.visible,
                 ),
