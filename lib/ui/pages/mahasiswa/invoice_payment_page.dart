@@ -3,13 +3,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kampus/blocs/invoice_payment/invoice_payment_bloc.dart';
+import 'package:kampus/blocs/payment_paid/payment_paid_bloc.dart';
 import 'package:kampus/services/auth_service.dart';
+import 'package:kampus/shared/shared_methods.dart';
 import 'package:kampus/shared/shared_values.dart';
 // import 'package:kampus/shared/shared_methods.dart';
 import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/list_paid.dart';
 import 'package:kampus/ui/widgets/list_unpaid.dart';
 import 'package:http/http.dart' as http;
+import 'package:kampus/ui/widgets/skeleton.dart';
+import 'package:shimmer/shimmer.dart';
 
 class InvoicePaymentPage extends StatefulWidget {
   const InvoicePaymentPage({
@@ -116,46 +120,98 @@ class _InvoicePaymentPageState extends State<InvoicePaymentPage> {
                   InvoicePaymentBloc()..add(InvoicePaymentGet()),
               child: BlocBuilder<InvoicePaymentBloc, InvoicePaymentState>(
                 builder: (context, state) {
-                  if (state is InvoicePaymentSuccess) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 24),
-                          padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              topRight: Radius.circular(16),
-                            ),
-                            color: whiteColor,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 4.0,
-                                offset: Offset(0, -4),
+                  if (state is InvoicePaymentLoading) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.white,
+                          child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 18),
+                              Skeleton(
+                                height: 12,
+                                width: 220,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 12,
+                                width: 300,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
                               ),
                             ],
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: state.invoicePayment
-                                .where((invoicePaymentMethod) =>
-                                    invoicePaymentMethod.id == '3' ||
-                                    invoicePaymentMethod.id == '5')
-                                .map((invoicePaymentMethod) {
-                              return ListUnpaid(
-                                  invoicePaymentMethod: invoicePaymentMethod);
-                            }).toList(),
-                            // children: [
-                            //   ListUnpaid(
-                            //     komponen: '1. Uang Kuliah',
-                            //     biaya: formatCurrency(1000000),
-                            //     tanggal: '1 Jan 2024',
-                            //   ),
-                            // ],
+                        ),
+                      ),
+                    );
+                  } else if (state is InvoicePaymentSuccess) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 24),
+                              padding: const EdgeInsets.all(24),
+                              decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(16),
+                                  topRight: Radius.circular(16),
+                                ),
+                                color: whiteColor,
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    blurRadius: 4.0,
+                                    offset: Offset(0, -4),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: state.invoicePayment
+                                    .map((invoicePaymentMethod) {
+                                  return ListUnpaid(
+                                      invoicePaymentMethod:
+                                          invoicePaymentMethod);
+                                }).toList(),
+                              ),
+                            ),
                           ),
                         ),
+                        // Bagian Total Billing di luar Expanded agar tetap berada di bawah
                         Container(
                           padding: const EdgeInsets.all(24),
                           decoration: BoxDecoration(
@@ -198,7 +254,12 @@ class _InvoicePaymentPageState extends State<InvoicePaymentPage> {
                                   height: 4,
                                 ),
                                 Text(
-                                  state.invoicePayment.first.id.toString(),
+                                  formatCurrency(
+                                    state.invoicePayment
+                                        .map((invoicePaymentMethod) =>
+                                            invoicePaymentMethod.biaya ?? 0)
+                                        .fold(0, (prev, biaya) => prev + biaya),
+                                  ),
                                   style: redTextStyle.copyWith(
                                     fontSize: 16,
                                     fontWeight: semiBold,
@@ -210,56 +271,124 @@ class _InvoicePaymentPageState extends State<InvoicePaymentPage> {
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     );
+                  } else {
+                    return Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            margin: const EdgeInsets.only(top: 12),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage('assets/img_no_data.png'),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text.rich(
+                            TextSpan(
+                              text: 'Oops! Sepertinya kamu tidak\nmemiliki ',
+                              style: blackTextStyle.copyWith(fontSize: 12),
+                              children: [
+                                TextSpan(
+                                  text: 'Invoice Payment',
+                                  style: blueTextStyle.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: semiBold,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: ' hari ini',
+                                  style: blackTextStyle.copyWith(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    );
                   }
-
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
                 },
               ),
             ),
             BlocProvider(
-              create: (context) =>
-                  InvoicePaymentBloc()..add(InvoicePaymentGet()),
-              child: BlocBuilder<InvoicePaymentBloc, InvoicePaymentState>(
+              create: (context) => PaymentPaidBloc()..add(PaymentPaidGet()),
+              child: BlocBuilder<PaymentPaidBloc, PaymentPaidState>(
                 builder: (context, state) {
-                  if (state is InvoicePaymentSuccess) {
+                  if (state is PaymentPaidLoading) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.white,
+                          child: const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: 18),
+                              Skeleton(
+                                height: 12,
+                                width: 220,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 12,
+                                width: 300,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                              SizedBox(height: 8),
+                              Skeleton(
+                                height: 115,
+                                width: double.infinity,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  } else if (state is PaymentPaidSuccess) {
+                    final filteredPaid =
+                        state.paymentPaid.where((paymentPaidMethod) {
+                      return paymentPaidMethod.tahun == _selectedTahun &&
+                          paymentPaidMethod.semester == _selectedSemester;
+                    }).toList();
+
                     return Column(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // DropdownButtonFormField(
-                        //   padding: const EdgeInsets.symmetric(
-                        //     horizontal: 12,
-                        //   ),
-                        //   value: _selectedVal,
-                        //   items: _productSizeList
-                        //       .map(
-                        //         (e) => DropdownMenuItem(
-                        //           child: Text(e),
-                        //           value: e,
-                        //         ),
-                        //       )
-                        //       .toList(),
-                        //   onChanged: (val) {
-                        //     setState(
-                        //       () {
-                        //         _selectedVal = val as String;
-                        //       },
-                        //     );
-                        //   },
-                        //   icon: Icon(
-                        //     Icons.arrow_drop_down_circle,
-                        //     color: purpleColor,
-                        //   ),
-                        //   // dropdownColor: Colors.blue.shade50,
-                        //   decoration: const InputDecoration(
-                        //     labelText: 'Pilih Komponen',
-                        //     border: InputBorder.none,
-                        //   ),
-                        // ),
                         Container(
                           padding: const EdgeInsets.all(12),
                           child: DropdownButtonFormField<String>(
@@ -293,123 +422,193 @@ class _InvoicePaymentPageState extends State<InvoicePaymentPage> {
                             ),
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 12),
-                          padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              topRight: Radius.circular(16),
-                            ),
-                            color: whiteColor,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 4.0,
-                                offset: Offset(0, -4),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: state.invoicePayment
-                                // .where((invoicePaymentMethod) =>
-                                //     invoicePaymentMethod.id == '10')
-                                .map((invoicePaymentMethod) {
-                              return ListPaid(
-                                  invoicePaymentMethod: invoicePaymentMethod);
-                            }).toList(),
-                            // children: [
-                            //   ListPaid(
-                            //     komponen: '1. Uang Kuliah',
-                            //     biaya: formatCurrency(1000000),
-                            //     tanggal: '1 Jan 2024',
-                            //   ),
-                            //   ListPaid(
-                            //     komponen: '2. Uang Kuliah',
-                            //     biaya: formatCurrency(1000000),
-                            //     tanggal: '1 Feb 2024',
-                            //   ),
-                            //   ListPaid(
-                            //     komponen: '3. Uang Kuliah',
-                            //     biaya: formatCurrency(1000000),
-                            //     tanggal: '1 Mar 2024',
-                            //   ),
-                            //   ListPaid(
-                            //     komponen: '4. Uang Kuliah',
-                            //     biaya: formatCurrency(1000000),
-                            //     tanggal: '1 Apr 2024',
-                            //   ),
-                            // ],
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: filteredPaid.isEmpty
+                                ? Center(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 48,
+                                          height: 48,
+                                          margin:
+                                              const EdgeInsets.only(top: 12),
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            image: DecorationImage(
+                                              fit: BoxFit.cover,
+                                              image: AssetImage(
+                                                  'assets/img_no_data.png'),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text.rich(
+                                          TextSpan(
+                                            text:
+                                                'Oops! Sepertinya kamu tidak\nmemiliki ',
+                                            style: blackTextStyle.copyWith(
+                                                fontSize: 12),
+                                            children: [
+                                              TextSpan(
+                                                text: 'Invoice Payment',
+                                                style: blueTextStyle.copyWith(
+                                                  fontSize: 12,
+                                                  fontWeight: semiBold,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: ' hari ini',
+                                                style: blackTextStyle.copyWith(
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Container(
+                                    margin: const EdgeInsets.only(top: 12),
+                                    padding: const EdgeInsets.all(24),
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(16),
+                                        topRight: Radius.circular(16),
+                                      ),
+                                      color: whiteColor,
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 4.0,
+                                          offset: Offset(0, -4),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      // children:
+                                      //     state.paymentPaid.map((paymentPaidMethod) {
+                                      //   return ListPaid(
+                                      //       paymentPaidMethod: paymentPaidMethod);
+                                      // }).toList(),
+                                      children:
+                                          filteredPaid.map((paymentPaidMethod) {
+                                        return ListPaid(
+                                            paymentPaidMethod:
+                                                paymentPaidMethod);
+                                      }).toList(),
+                                    ),
+                                  ),
                           ),
                         ),
-                        const Spacer(),
-                        Container(
-                          padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(16),
-                              topRight: Radius.circular(16),
-                            ),
-                            color: whiteColor,
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 4.0,
-                                offset: Offset(0, -2),
+                        // const Spacer(),
+                        // Container(
+                        //   padding: const EdgeInsets.all(24),
+                        //   decoration: BoxDecoration(
+                        //     borderRadius: const BorderRadius.only(
+                        //       topLeft: Radius.circular(16),
+                        //       topRight: Radius.circular(16),
+                        //     ),
+                        //     color: whiteColor,
+                        //     boxShadow: const [
+                        //       BoxShadow(
+                        //         color: Colors.grey,
+                        //         blurRadius: 4.0,
+                        //         offset: Offset(0, -2),
+                        //       ),
+                        //     ],
+                        //   ),
+                        //   child: Container(
+                        //     decoration: BoxDecoration(
+                        //       border: Border(
+                        //         bottom: BorderSide(color: greySoftColor),
+                        //       ),
+                        //     ),
+                        //     child: Column(
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //         Row(
+                        //           mainAxisAlignment:
+                        //               MainAxisAlignment.spaceBetween,
+                        //           children: [
+                        //             Text(
+                        //               'Sisa Pembayaran',
+                        //               style: greyDarkTextStyle.copyWith(
+                        //                 fontSize: 12,
+                        //                 fontWeight: regular,
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         const SizedBox(
+                        //           height: 4,
+                        //         ),
+                        //         Text(
+                        //           state.invoicePayment.first.id.toString(),
+                        //           style: redTextStyle.copyWith(
+                        //             fontSize: 16,
+                        //             fontWeight: semiBold,
+                        //           ),
+                        //         ),
+                        //         const SizedBox(
+                        //           height: 4,
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // )
+                      ],
+                    );
+                  } else {
+                    return Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            margin: const EdgeInsets.only(top: 12),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage('assets/img_no_data.png'),
                               ),
-                            ],
+                            ),
                           ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(color: greySoftColor),
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          const SizedBox(height: 8),
+                          Text.rich(
+                            TextSpan(
+                              text: 'Oops! Sepertinya kamu tidak\nmemiliki ',
+                              style: blackTextStyle.copyWith(fontSize: 12),
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Sisa Pembayaran',
-                                      style: greyDarkTextStyle.copyWith(
-                                        fontSize: 12,
-                                        fontWeight: regular,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 4,
-                                ),
-                                Text(
-                                  // formatCurrency(4000000),
-                                  state.invoicePayment.first.id.toString(),
-                                  style: redTextStyle.copyWith(
-                                    fontSize: 16,
+                                TextSpan(
+                                  text: 'Invoice Payment',
+                                  style: blueTextStyle.copyWith(
+                                    fontSize: 12,
                                     fontWeight: semiBold,
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 4,
+                                TextSpan(
+                                  text: ' hari ini',
+                                  style: blackTextStyle.copyWith(fontSize: 12),
                                 ),
                               ],
                             ),
+                            textAlign: TextAlign.center,
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     );
                   }
-
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
                 },
               ),
-            ),
+            )
           ],
         ),
       ),

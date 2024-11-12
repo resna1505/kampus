@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kampus/models/invoice_payment_model.dart';
+import 'package:kampus/models/payment_paid_model.dart';
 import 'package:kampus/shared/shared_methods.dart';
 import 'package:kampus/shared/theme.dart';
 
@@ -7,14 +7,14 @@ class ListPaid extends StatelessWidget {
   // final String komponen;
   // final String biaya;
   // final String tanggal;
-  final InvoicePaymentModel invoicePaymentMethod;
+  final PaymentPaidModel paymentPaidMethod;
 
   const ListPaid({
     super.key,
     // required this.komponen,
     // required this.biaya,
     // required this.tanggal,
-    required this.invoicePaymentMethod,
+    required this.paymentPaidMethod,
   });
 
   @override
@@ -34,15 +34,14 @@ class ListPaid extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    invoicePaymentMethod.komponen.toString(),
+                    paymentPaidMethod.komponen.toString(),
                     style: blackTextStyle.copyWith(
                       fontSize: 12,
                       fontWeight: regular,
                     ),
                   ),
                   Text(
-                    formatCurrency(invoicePaymentMethod.biaya!),
-                    // invoicePaymentMethod.biaya.toString(),
+                    formatCurrency(paymentPaidMethod.biaya!),
                     style: blackTextStyle.copyWith(
                       fontSize: 12,
                       fontWeight: semiBold,
@@ -56,18 +55,35 @@ class ListPaid extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Tanggal Bayar : ',
+                    'Tanggal : ',
                     style: greyTextStyle.copyWith(
                       fontSize: 10,
                     ),
                   ),
                   Text(
-                    invoicePaymentMethod.tanggal.toString(),
+                    paymentPaidMethod.tanggal.toString(),
                     style: redTextStyle.copyWith(
                       fontSize: 10,
                       fontWeight: semiBold,
                     ),
-                  )
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  const Spacer(),
+                  Text(
+                    'Sisa Tagihan : ',
+                    style: greyTextStyle.copyWith(
+                      fontSize: 10,
+                    ),
+                  ),
+                  Text(
+                    formatCurrency(paymentPaidMethod.sisa!),
+                    style: redTextStyle.copyWith(
+                      fontSize: 10,
+                      fontWeight: semiBold,
+                    ),
+                  ),
                 ],
               ),
               const SizedBox(

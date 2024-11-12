@@ -16,9 +16,7 @@ class InvoicePaymentModel {
   factory InvoicePaymentModel.fromJson(Map<String, dynamic> json) =>
       InvoicePaymentModel(
         komponen: json['NAMAKOMPONEN'],
-        biaya: json['JUMLAH'],
-        tanggal: json['TANGGALBAYAR'],
-        name: json['name'],
-        id: json['id'],
+        biaya: json['BIAYA'],
+        tanggal: json['BATASBAYAR'],
       );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kampus/models/invoice_payment_model.dart';
+import 'package:kampus/shared/shared_methods.dart';
 import 'package:kampus/shared/theme.dart';
 
 class ListUnpaid extends StatelessWidget {
@@ -34,14 +35,14 @@ class ListUnpaid extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    invoicePaymentMethod.name.toString(),
+                    invoicePaymentMethod.komponen.toString(),
                     style: blackTextStyle.copyWith(
                       fontSize: 12,
                       fontWeight: regular,
                     ),
                   ),
                   Text(
-                    invoicePaymentMethod.name.toString(),
+                    formatCurrency(invoicePaymentMethod.biaya!),
                     style: blackTextStyle.copyWith(
                       fontSize: 12,
                       fontWeight: semiBold,
@@ -61,7 +62,7 @@ class ListUnpaid extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    invoicePaymentMethod.name.toString(),
+                    invoicePaymentMethod.tanggal.toString(),
                     style: redTextStyle.copyWith(
                       fontSize: 10,
                       fontWeight: semiBold,
