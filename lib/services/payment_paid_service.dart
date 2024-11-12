@@ -21,11 +21,6 @@ class PaymentPaidService {
       );
 
       if (res.statusCode == 200) {
-        // List<dynamic> jsonData = jsonDecode(res.body);
-        // // final detail = jsonData[0]['detail'] as List<dynamic>;
-        // // return detail
-        // //     .map((paymentMethod) => PaymentPaidModel.fromJson(paymentMethod))
-        // //     .toList();
         return List<PaymentPaidModel>.from(jsonDecode(res.body)
             .map((payment) => PaymentPaidModel.fromJson(payment))).toList();
       } else {
