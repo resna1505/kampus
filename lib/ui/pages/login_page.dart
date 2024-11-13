@@ -1,3 +1,4 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kampus/auth_provider.dart';
@@ -50,12 +51,21 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthFailed) {
-            showCustomSnackbar(context, state.e);
+            // showCustomSnackbar(context, state.e);
+            showSnackbar(context, 'Error', state.e, 'error');
           }
 
           if (state is AuthSuccess) {
             Navigator.pushNamedAndRemoveUntil(
                 context, '/home-page-mahasiswa', (route) => false);
+            AnimatedSnackBar.rectangle(
+              'Success',
+              'Selamat datang, login sukses!',
+              type: AnimatedSnackBarType.success,
+              brightness: Brightness.light,
+            ).show(
+              context,
+            );
           }
         },
         builder: (context, state) {
@@ -305,8 +315,10 @@ class _LoginPageState extends State<LoginPage> {
                             passwordController.text,
                           );
                         } else {
-                          showCustomSnackbar(
-                              context, 'Semua Field harus di isi');
+                          // showCustomSnackbar(
+                          //     context, 'Semua Field harus di isi');
+                          showSnackbar(context, 'Error',
+                              'Semua Field harus di isi', 'error');
                         }
                         // Navigator.pushNamedAndRemoveUntil(
                         //     context, '/home-page-mahasiswa', (route) => false);

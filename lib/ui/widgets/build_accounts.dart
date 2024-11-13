@@ -15,7 +15,8 @@ class BuildAccounts extends StatelessWidget {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthFailed) {
-          showCustomSnackbar(context, state.e);
+          // showCustomSnackbar(context, state.e);
+          showSnackbar(context, 'Error', state.e, 'error');
         }
         if (state is AuthInitial) {
           Navigator.pushNamedAndRemoveUntil(

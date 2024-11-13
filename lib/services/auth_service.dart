@@ -21,7 +21,7 @@ class AuthService {
         await storeCredentialToLocal(user);
         return user;
       } else {
-        throw Exception(jsonDecode(res.body)['errors']);
+        throw Exception(jsonDecode(res.body)['messages']);
       }
     } catch (e) {
       rethrow;

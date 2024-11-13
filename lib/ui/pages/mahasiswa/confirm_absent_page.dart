@@ -37,9 +37,11 @@ class _ConfirmAbsentPageState extends State<ConfirmAbsentPage> {
       }
       Navigator.pushNamedAndRemoveUntil(
           context, '/home-page-mahasiswa', (route) => false);
-      successSnackbar(context, 'data berhasil disimpan');
+      // successSnackbar(context, 'data berhasil disimpan');
+      showSnackbar(context, 'Success', 'data berhasil disimpan', 'success');
     } catch (e) {
-      showCustomSnackbar(context, e.toString());
+      // showCustomSnackbar(context, e.toString());
+      showSnackbar(context, 'Error', e.toString(), 'error');
     }
   }
 
@@ -113,7 +115,9 @@ class _ConfirmAbsentPageState extends State<ConfirmAbsentPage> {
                       // ScaffoldMessenger.of(context).showSnackBar(
                       //   const SnackBar(content: Text("Data tidak lengkap")),
                       // );
-                      showCustomSnackbar(context, "Data tidak lengkap");
+                      // showCustomSnackbar(context, "Data tidak lengkap");
+                      showSnackbar(
+                          context, 'Error', 'Data tidak lengkap', 'error');
                     }
                   },
                 ),

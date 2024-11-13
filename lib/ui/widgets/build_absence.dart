@@ -123,17 +123,24 @@ class _BuildAbsenceState extends State<BuildAbsence> {
                                 },
                               );
                             } else {
-                              showCustomSnackbar(
-                                context,
-                                'Hasil scan tidak valid. Silakan coba lagi.',
-                              );
+                              // showCustomSnackbar(
+                              //   context,
+                              //   'Hasil scan tidak valid. Silakan coba lagi.',
+                              // );
+                              showSnackbar(
+                                  context,
+                                  'Info',
+                                  'Hasil scan tidak valid. Silakan coba lagi.',
+                                  'info');
                             }
                           }
                         } else {
-                          showCustomSnackbar(
-                            context,
-                            'Anda sudah absen',
-                          );
+                          // showCustomSnackbar(
+                          //   context,
+                          //   'Anda sudah absen',
+                          // );
+                          showSnackbar(
+                              context, 'Info', 'Anda sudah absen', 'info');
                         }
                       },
                     );
