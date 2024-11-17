@@ -13,13 +13,17 @@ class SplashPage extends StatelessWidget {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/home-page-mahasiswa', (route) => false);
+            Future.delayed(const Duration(milliseconds: 1500), () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/home-page-mahasiswa', (route) => false);
+            });
           }
 
           if (state is AuthFailed) {
-            Navigator.pushNamedAndRemoveUntil(
-                context, '/login-page', (route) => false);
+            Future.delayed(const Duration(milliseconds: 1500), () {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/login-page', (route) => false);
+            });
           }
         },
         child: Center(

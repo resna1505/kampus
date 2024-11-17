@@ -55,14 +55,14 @@ class _ChatScreenState extends State<ChatScreen> {
           final recevierData = snapshot.data!.data() as Map<String, dynamic>;
 
           return Scaffold(
-            backgroundColor: Color(0xFFEEEEEE),
+            backgroundColor: const Color(0xFFEEEEEE),
             appBar: AppBar(
               title: Row(
                 children: [
                   CircleAvatar(
                     backgroundImage: NetworkImage(recevierData['imageUrl']),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Text(recevierData['name']),
@@ -74,19 +74,20 @@ class _ChatScreenState extends State<ChatScreen> {
                 Expanded(
                   child: chatId != null && chatId!.isNotEmpty
                       ? MessagesStream(chatId: chatId!)
-                      : Center(
-                          child: Text('Belum ngechat kalian'),
+                      : const Center(
+                          child: Text('No Message'),
                         ),
                 ),
                 Container(
                   color: Colors.white,
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                   child: Row(
                     children: [
                       Expanded(
                         child: TextFormField(
                           controller: _textController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: "Enter your message...",
                             border: InputBorder.none,
                           ),
@@ -106,7 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             }
                           }
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.send,
                           color: Color(0xFF3876FD),
                         ),
@@ -145,7 +146,7 @@ class MessagesStream extends StatelessWidget {
           .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -195,7 +196,7 @@ class MessageBubble extends StatelessWidget {
     final DateTime messageTime =
         (timestamp is Timestamp) ? timestamp.toDate() : DateTime.now();
     return Padding(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         crossAxisAlignment:
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -205,7 +206,7 @@ class MessageBubble extends StatelessWidget {
               maxWidth: MediaQuery.of(context).size.width * 0.75,
             ),
             decoration: BoxDecoration(
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.black12,
                   blurRadius: 4,
@@ -213,20 +214,20 @@ class MessageBubble extends StatelessWidget {
                 ),
               ],
               borderRadius: isMe
-                  ? BorderRadius.only(
+                  ? const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       bottomLeft: Radius.circular(15),
                       bottomRight: Radius.circular(15),
                     )
-                  : BorderRadius.only(
+                  : const BorderRadius.only(
                       topRight: Radius.circular(15),
                       bottomLeft: Radius.circular(15),
                       bottomRight: Radius.circular(15),
                     ),
-              color: isMe ? Color(0xFF3876FD) : Colors.white,
+              color: isMe ? const Color(0xFF3876FD) : Colors.white,
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -237,7 +238,7 @@ class MessageBubble extends StatelessWidget {
                       fontSize: 15,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Text(

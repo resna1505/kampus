@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/chat_screen.dart';
 
 class ChatTile extends StatelessWidget {
@@ -25,8 +26,8 @@ class ChatTile extends StatelessWidget {
             title: Text(receiverData['name']),
             subtitle: Text(lastMessage, maxLines: 2),
             trailing: Text(
-              '${timestamp.hour};${timestamp.minute}',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
+              '${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}',
+              style: greyDarkTextStyle.copyWith(fontSize: 12),
             ),
             onTap: () {
               Navigator.push(

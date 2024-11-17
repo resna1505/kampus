@@ -140,7 +140,9 @@ class CardMahasiswaPage extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                state.biodata.nama.toString(),
+                                state.biodata.nama.toString().length > 25
+                                    ? '${state.biodata.nama.toString().substring(0, 22)}...'
+                                    : state.biodata.nama.toString(),
                                 style: blackTextStyle.copyWith(
                                   fontSize: 16,
                                   fontWeight: semiBold,
