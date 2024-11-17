@@ -193,7 +193,7 @@ class _AssessmentPageState extends State<AssessmentPage> {
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
                                         image: AssetImage(
-                                          'assets/img_no_data.png',
+                                          'assets/img_no_data.png', 
                                         ),
                                       ),
                                     ),
