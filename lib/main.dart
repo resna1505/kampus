@@ -1,10 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kampus/auth_provider.dart';
 import 'package:kampus/blocs/auth/auth_bloc.dart';
-import 'package:kampus/chat_provider.dart';
-import 'package:kampus/firebase_options.dart';
+import 'package:kampus/services/auth_provider.dart';
 import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/pages/login_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/assessment_page.dart';
@@ -28,6 +26,8 @@ import 'package:kampus/ui/pages/mahasiswa/todo_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/transcript_page.dart';
 import 'package:kampus/ui/pages/splash_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/notification_detail.dart';
+import 'package:kampus/services/chat_provider.dart';
+import 'package:kampus/ui/widgets/firebase_options.dart';
 import 'package:provider/provider.dart';
 
 // void main() => runApp(const MyApp());

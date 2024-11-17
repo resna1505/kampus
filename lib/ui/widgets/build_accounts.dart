@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kampus/auth_provider.dart';
 import 'package:kampus/blocs/auth/auth_bloc.dart';
+import 'package:kampus/services/auth_provider.dart';
 import 'package:kampus/shared/shared_methods.dart';
 import 'package:kampus/shared/theme.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +24,8 @@ class BuildAccounts extends StatelessWidget {
             '/login-page',
             (route) => false,
           );
+          showSnackbar(
+              context, 'Success', 'Anda telah berhasil logout.', 'success');
         }
       },
       builder: (context, state) {

@@ -5,8 +5,10 @@ class PaymentPaidModel {
   final int? biaya;
   final int? sisa;
   final String? tanggal;
+  final String? idkomponen;
 
   PaymentPaidModel({
+    this.idkomponen,
     this.komponen,
     this.biaya,
     this.tanggal,
@@ -17,6 +19,7 @@ class PaymentPaidModel {
 
   factory PaymentPaidModel.fromJson(Map<String, dynamic> json) =>
       PaymentPaidModel(
+        idkomponen: json['IDKOMPONEN'],
         komponen: json['NAMAKOMPONEN'],
         biaya: json['JUMLAHBAYAR'],
         tanggal: json['TANGGALBAYAR'],

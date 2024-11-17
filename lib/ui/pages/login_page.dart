@@ -1,9 +1,9 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kampus/auth_provider.dart';
 import 'package:kampus/blocs/auth/auth_bloc.dart';
 import 'package:kampus/models/sign_in_form_model.dart';
+import 'package:kampus/services/auth_provider.dart';
 import 'package:kampus/shared/shared_methods.dart';
 import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/buttons.dart';
@@ -275,25 +275,25 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 8,
                     ),
-                    Row(
-                      children: [
-                        const Spacer(),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Column(
-                          children: [
-                            Text(
-                              'Forgot Password',
-                              style: redTextStyle.copyWith(
-                                fontWeight: semiBold,
-                                fontSize: 14,
-                              ),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     const Spacer(),
+                    //     const SizedBox(
+                    //       height: 8,
+                    //     ),
+                    //     Column(
+                    //       children: [
+                    //         Text(
+                    //           'Forgot Password',
+                    //           style: redTextStyle.copyWith(
+                    //             fontWeight: semiBold,
+                    //             fontSize: 14,
+                    //           ),
+                    //         )
+                    //       ],
+                    //     )
+                    //   ],
+                    // ),
                     const SizedBox(
                       height: 30,
                     ),

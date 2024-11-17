@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kampus/chat_provider.dart';
-import 'package:kampus/search_screen.dart';
 import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/build_absence.dart';
 import 'package:kampus/ui/widgets/build_academy.dart';
@@ -11,7 +9,9 @@ import 'package:kampus/ui/widgets/build_campus_news.dart';
 import 'package:kampus/ui/widgets/build_explore.dart';
 import 'package:kampus/ui/widgets/build_profile.dart';
 import 'package:kampus/ui/widgets/build_schedule.dart';
+import 'package:kampus/services/chat_provider.dart';
 import 'package:kampus/ui/widgets/chat_tile.dart';
+import 'package:kampus/ui/widgets/search_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomePageMahasiswa extends StatefulWidget {

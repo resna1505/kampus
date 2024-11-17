@@ -11,12 +11,10 @@ class PaymentPaidService {
       final idmhs = await AuthService().getIdMahasiswa();
       final res = await http.post(
         Uri.parse(
-          '$baseUrl/mahasiswa/riwayatbayar2',
+          '$baseUrl/mahasiswa/riwayatbayar3',
         ),
         body: {
           "id": idmhs,
-          "idkomponen": "032",
-          "jeniskomponen": "3",
         },
       );
 

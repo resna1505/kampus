@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kampus/chat_screen.dart';
+import 'package:kampus/ui/widgets/chat_screen.dart';
 
 class ChatTile extends StatelessWidget {
   final String chatId;

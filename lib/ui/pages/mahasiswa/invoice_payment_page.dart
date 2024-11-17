@@ -43,6 +43,7 @@ class _InvoicePaymentPageState extends State<InvoicePaymentPage> {
   String _selectedTahunAkademik = '';
   String _selectedTahun = '';
   String _selectedSemester = '';
+  String _selectedIdKomponen = '';
 
   @override
   void initState() {
@@ -72,6 +73,7 @@ class _InvoicePaymentPageState extends State<InvoicePaymentPage> {
           _selectedTahunAkademik = _productSizeList[0]['NAMAKOMPONEN'];
           _selectedTahun = _productSizeList[0]['TAHUNAJARAN'];
           _selectedSemester = _productSizeList[0]['SEMESTER'];
+          _selectedIdKomponen = _productSizeList[0]['IDKOMPONEN'];
         }
       });
     } else {
@@ -383,7 +385,8 @@ class _InvoicePaymentPageState extends State<InvoicePaymentPage> {
                     final filteredPaid =
                         state.paymentPaid.where((paymentPaidMethod) {
                       return paymentPaidMethod.tahun == _selectedTahun &&
-                          paymentPaidMethod.semester == _selectedSemester;
+                          paymentPaidMethod.semester == _selectedSemester &&
+                          paymentPaidMethod.idkomponen == _selectedIdKomponen;
                     }).toList();
 
                     return Column(
@@ -392,6 +395,7 @@ class _InvoicePaymentPageState extends State<InvoicePaymentPage> {
                         Container(
                           padding: const EdgeInsets.all(12),
                           child: DropdownButtonFormField<String>(
+                            isExpanded: true, // Tambahkan properti ini
                             value: _selectedTahunAkademik.isNotEmpty
                                 ? _selectedTahunAkademik
                                 : null,
@@ -410,6 +414,9 @@ class _InvoicePaymentPageState extends State<InvoicePaymentPage> {
                                 _selectedSemester = _productSizeList.firstWhere(
                                     (e) =>
                                         e['NAMAKOMPONEN'] == val)['SEMESTER'];
+                                _selectedIdKomponen =
+                                    _productSizeList.firstWhere((e) =>
+                                        e['NAMAKOMPONEN'] == val)['IDKOMPONEN'];
                               });
                             },
                             icon: Icon(
@@ -491,11 +498,6 @@ class _InvoicePaymentPageState extends State<InvoicePaymentPage> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      // children:
-                                      //     state.paymentPaid.map((paymentPaidMethod) {
-                                      //   return ListPaid(
-                                      //       paymentPaidMethod: paymentPaidMethod);
-                                      // }).toList(),
                                       children:
                                           filteredPaid.map((paymentPaidMethod) {
                                         return ListPaid(
