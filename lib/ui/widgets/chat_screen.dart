@@ -52,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
       future: _firestore.collection('users').doc(widget.receiverId).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          final recevierData = snapshot.data!.data() as Map<String, dynamic>;
+          final receiverData = snapshot.data!.data() as Map<String, dynamic>;
 
           return Scaffold(
             backgroundColor: const Color(0xFFEEEEEE),
@@ -60,12 +60,12 @@ class _ChatScreenState extends State<ChatScreen> {
               title: Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: NetworkImage(recevierData['imageUrl']),
+                    backgroundImage: NetworkImage(receiverData['imageUrl']),
                   ),
                   const SizedBox(
                     width: 10,
                   ),
-                  Text(recevierData['name']),
+                  Text(receiverData['name']),
                 ],
               ),
             ),
@@ -121,7 +121,7 @@ class _ChatScreenState extends State<ChatScreen> {
         }
         return Scaffold(
           appBar: AppBar(),
-          body: Center(
+          body: const Center(
             child: CircularProgressIndicator(),
           ),
         );
@@ -145,12 +145,12 @@ class MessagesStream extends StatelessWidget {
 
       final differenceInDays = nowDate.difference(timestampDate).inDays;
 
-      if (differenceInDays == 1) {
+      if (differenceInDays == 0) {
+        return "Today";
+      } else if (differenceInDays == 1) {
         return "Yesterday";
-      } else if (differenceInDays > 1) {
-        return "${timestamp.day}/${timestamp.month}/${timestamp.year}";
       } else {
-        return "${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}";
+        return "${timestamp.day}/${timestamp.month}/${timestamp.year}";
       }
     }
 
@@ -167,37 +167,58 @@ class MessagesStream extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
+
         final messages = snapshot.data!.docs;
-        List<MessageBubble> messageWidgets = [];
+        Map<String, List<MessageBubble>> groupedMessages = {};
+
         for (var message in messages) {
           final messageData = message.data() as Map<String, dynamic>;
           final messageText = messageData['messageBody'];
           final messageSender = messageData['senderId'];
-          // final timestamp =
-          //     messageData['timestamp'] ?? FieldValue.serverTimestamp();
           final timestampRaw = messageData['timestamp'];
           final timestamp = timestampRaw is Timestamp
               ? timestampRaw.toDate()
-              : DateTime.now(); // Gunakan waktu saat ini jika null
-          final formattedTime = _formatTimestamp(timestamp);
+              : DateTime.now();
+
+          final formattedDate = _formatTimestamp(timestamp);
+          final formattedTime =
+              "${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}";
 
           final currentUser = FirebaseAuth.instance.currentUser!.uid;
 
-          // final messageWidget = MessageBubble(
-          //   sender: messageSender,
-          //   text: messageText,
-          //   isMe: currentUser == messageSender,
-          //   timestamp: formattedTime,
-          // );
-          final messageWidget = MessageBubble(
+          final messageBubble = MessageBubble(
             sender: messageSender,
             text: messageText,
             isMe: currentUser == messageSender,
             formattedTime: formattedTime,
           );
 
-          messageWidgets.add(messageWidget);
+          if (groupedMessages.containsKey(formattedDate)) {
+            groupedMessages[formattedDate]!.add(messageBubble);
+          } else {
+            groupedMessages[formattedDate] = [messageBubble];
+          }
         }
+
+        List<Widget> messageWidgets = [];
+        groupedMessages.forEach((date, bubbles) {
+          messageWidgets.add(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Center(
+                child: Text(
+                  date,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          );
+          messageWidgets.addAll(bubbles);
+        });
+
         return ListView(
           reverse: true,
           children: messageWidgets,
@@ -206,6 +227,131 @@ class MessagesStream extends StatelessWidget {
     );
   }
 }
+
+// class MessagesStream extends StatefulWidget {
+//   final String chatId;
+
+//   const MessagesStream({super.key, required this.chatId});
+
+//   @override
+//   _MessagesStreamState createState() => _MessagesStreamState();
+// }
+
+// class _MessagesStreamState extends State<MessagesStream> {
+//   late ScrollController _scrollController;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _scrollController = ScrollController();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     String _formatTimestamp(DateTime timestamp) {
+//       final now = DateTime.now();
+//       final nowDate = DateTime(now.year, now.month, now.day);
+//       final timestampDate =
+//           DateTime(timestamp.year, timestamp.month, timestamp.day);
+
+//       final differenceInDays = nowDate.difference(timestampDate).inDays;
+
+//       if (differenceInDays == 0) {
+//         return "Today";
+//       } else if (differenceInDays == 1) {
+//         return "Yesterday";
+//       } else {
+//         return "${timestamp.day}/${timestamp.month}/${timestamp.year}";
+//       }
+//     }
+
+//     return StreamBuilder<QuerySnapshot>(
+//       stream: FirebaseFirestore.instance
+//           .collection('chats')
+//           .doc(widget.chatId)
+//           .collection('messages')
+//           .orderBy('timestamp',
+//               descending: false)
+//           .snapshots(),
+//       builder: (context, snapshot) {
+//         if (!snapshot.hasData) {
+//           return const Center(
+//             child: CircularProgressIndicator(),
+//           );
+//         }
+
+//         final messages = snapshot.data!.docs;
+
+//         List<Widget> messageWidgets = [];
+//         String? lastDateLabel;
+
+//         for (var message in messages) {
+//           final messageData = message.data() as Map<String, dynamic>;
+//           final messageText = messageData['messageBody'];
+//           final messageSender = messageData['senderId'];
+//           final timestampRaw = messageData['timestamp'];
+//           final timestamp = timestampRaw is Timestamp
+//               ? timestampRaw.toDate()
+//               : DateTime.now();
+
+//           final formattedDate = _formatTimestamp(timestamp);
+//           final formattedTime =
+//               "${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}";
+
+//           final currentUser = FirebaseAuth.instance.currentUser!.uid;
+
+//           if (formattedDate != lastDateLabel) {
+//             lastDateLabel = formattedDate;
+//             messageWidgets.add(
+//               Padding(
+//                 padding: const EdgeInsets.symmetric(vertical: 10),
+//                 child: Center(
+//                   child: Text(
+//                     formattedDate,
+//                     style: const TextStyle(
+//                       color: Colors.grey,
+//                       fontWeight: FontWeight.bold,
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             );
+//           }
+
+//           messageWidgets.add(
+//             MessageBubble(
+//               sender: messageSender,
+//               text: messageText,
+//               isMe: currentUser == messageSender,
+//               formattedTime: formattedTime,
+//             ),
+//           );
+//         }
+
+//         WidgetsBinding.instance.addPostFrameCallback((_) {
+//           if (_scrollController.hasClients) {
+//             _scrollController.animateTo(
+//                 _scrollController.position.maxScrollExtent,
+//                 duration: const Duration(milliseconds: 300),
+//                 curve: Curves.easeOut);
+//           }
+//         });
+
+//         return ListView(
+//           controller: _scrollController,
+//           reverse: false,
+//           children: messageWidgets,
+//         );
+//       },
+//     );
+//   }
+
+//   @override
+//   void dispose() {
+//     _scrollController.dispose();
+//     super.dispose();
+//   }
+// }
 
 class MessageBubble extends StatelessWidget {
   final String sender;

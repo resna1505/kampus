@@ -30,7 +30,7 @@ class ChatTile extends StatelessWidget {
       } else if (differenceInDays > 1) {
         return "${timestamp.day}/${timestamp.month}/${timestamp.year}";
       } else {
-        return "${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}";
+        return "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
       }
     }
 
