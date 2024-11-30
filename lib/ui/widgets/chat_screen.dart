@@ -137,6 +137,23 @@ class MessagesStream extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String _formatTimestamp(DateTime timestamp) {
+      final now = DateTime.now();
+      final nowDate = DateTime(now.year, now.month, now.day);
+      final timestampDate =
+          DateTime(timestamp.year, timestamp.month, timestamp.day);
+
+      final differenceInDays = nowDate.difference(timestampDate).inDays;
+
+      if (differenceInDays == 1) {
+        return "Yesterday";
+      } else if (differenceInDays > 1) {
+        return "${timestamp.day}/${timestamp.month}/${timestamp.year}";
+      } else {
+        return "${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}";
+      }
+    }
+
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection('chats')
@@ -156,17 +173,29 @@ class MessagesStream extends StatelessWidget {
           final messageData = message.data() as Map<String, dynamic>;
           final messageText = messageData['messageBody'];
           final messageSender = messageData['senderId'];
-          final timestamp =
-              messageData['timestamp'] ?? FieldValue.serverTimestamp();
+          // final timestamp =
+          //     messageData['timestamp'] ?? FieldValue.serverTimestamp();
+          final timestampRaw = messageData['timestamp'];
+          final timestamp = timestampRaw is Timestamp
+              ? timestampRaw.toDate()
+              : DateTime.now(); // Gunakan waktu saat ini jika null
+          final formattedTime = _formatTimestamp(timestamp);
 
           final currentUser = FirebaseAuth.instance.currentUser!.uid;
 
+          // final messageWidget = MessageBubble(
+          //   sender: messageSender,
+          //   text: messageText,
+          //   isMe: currentUser == messageSender,
+          //   timestamp: formattedTime,
+          // );
           final messageWidget = MessageBubble(
             sender: messageSender,
             text: messageText,
             isMe: currentUser == messageSender,
-            timestamp: timestamp,
+            formattedTime: formattedTime,
           );
+
           messageWidgets.add(messageWidget);
         }
         return ListView(
@@ -182,19 +211,18 @@ class MessageBubble extends StatelessWidget {
   final String sender;
   final String text;
   final bool isMe;
-  final dynamic timestamp;
+  final String formattedTime;
 
-  const MessageBubble(
-      {super.key,
-      required this.sender,
-      required this.text,
-      required this.isMe,
-      this.timestamp});
+  const MessageBubble({
+    super.key,
+    required this.sender,
+    required this.text,
+    required this.isMe,
+    required this.formattedTime,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final DateTime messageTime =
-        (timestamp is Timestamp) ? timestamp.toDate() : DateTime.now();
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Column(
@@ -242,7 +270,7 @@ class MessageBubble extends StatelessWidget {
                     height: 5,
                   ),
                   Text(
-                    '${messageTime.hour}:${messageTime.minute}',
+                    formattedTime,
                     style: TextStyle(
                       color: isMe ? Colors.white : Colors.black54,
                       fontSize: 12,
