@@ -17,29 +17,53 @@ class ChatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String _formatTimestamp(DateTime timestamp) {
+      final now = DateTime.now();
+      final nowDate = DateTime(now.year, now.month, now.day);
+      final timestampDate =
+          DateTime(timestamp.year, timestamp.month, timestamp.day);
+
+      final differenceInDays = nowDate.difference(timestampDate).inDays;
+
+      if (differenceInDays == 1) {
+        return "Yesterday";
+      } else if (differenceInDays > 1) {
+        return "${timestamp.day}/${timestamp.month}/${timestamp.year}";
+      } else {
+        return "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
+      }
+    }
+
     return lastMessage != ""
-        ? ListTile(
-            leading: CircleAvatar(
-              radius: 25,
-              backgroundImage: NetworkImage(receiverData['imageUrl']),
-            ),
-            title: Text(receiverData['name']),
-            subtitle: Text(lastMessage, maxLines: 2),
-            trailing: Text(
-              '${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}',
-              style: greyDarkTextStyle.copyWith(fontSize: 12),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatScreen(
-                    chatId: chatId,
-                    receiverId: receiverData['uid'],
+        ? Container(
+            color: whiteColor,
+            child: ListTile(
+              leading: CircleAvatar(
+                radius: 25,
+                backgroundImage: NetworkImage(receiverData['imageUrl']),
+              ),
+              title: Text(receiverData['name']),
+              subtitle: Text(lastMessage, maxLines: 2),
+              // trailing: Text(
+              //   '${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}',
+              //   style: greyDarkTextStyle.copyWith(fontSize: 12),
+              // ),
+              trailing: Text(
+                _formatTimestamp(timestamp), // Fungsi untuk format timestamp
+                style: greyDarkTextStyle.copyWith(fontSize: 12),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatScreen(
+                      chatId: chatId,
+                      receiverId: receiverData['uid'],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           )
         : Container();
   }
