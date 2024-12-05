@@ -26,6 +26,15 @@ if (flutterVersionName == null) {
 }
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'unibanewkey'
+            keyPassword 'r180776r'
+            storeFile file('/Users/rnd/Dropbox/Doc/keystore/unibanewkey.jks')
+            storePassword 'r180776r'
+        }
+    }
+
     namespace "com.mobile.uniba"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
