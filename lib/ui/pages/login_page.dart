@@ -9,6 +9,8 @@ import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/buttons.dart';
 import 'package:kampus/ui/widgets/forms.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -43,9 +45,22 @@ class _LoginPageState extends State<LoginPage> {
     return true;
   }
 
+  Future<String> getDeviceId() async {
+    final deviceInfo = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      return androidInfo.id;
+    } else if (Platform.isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      return iosInfo.identifierForVendor ?? 'unknown';
+    }
+    return 'unknown';
+  }
+
   @override
   Widget build(BuildContext context) {
     final auhtProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       backgroundColor: lightBackgroundColor,
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -300,13 +315,15 @@ class _LoginPageState extends State<LoginPage> {
                     CustomFilledButton(
                       title: 'Log In',
                       width: 300,
-                      onPressed: () {
+                      onPressed: () async {
+                        String deviceId = await getDeviceId();
                         if (validate()) {
                           context.read<AuthBloc>().add(
                                 AuthLogin(
                                   SignInFormModel(
                                     email: emailController.text,
                                     password: passwordController.text,
+                                    consoleId: deviceId,
                                   ),
                                 ),
                               );

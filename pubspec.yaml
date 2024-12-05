@@ -52,6 +52,7 @@ dependencies:
   upgrader: ^9.0.0  
   shared_preferences: ^2.2.3
   flutter_launcher_icons: ^0.13.1
+  device_info_plus: ^9.1.2
 
 dev_dependencies:
   flutter_lints: ^2.0.0

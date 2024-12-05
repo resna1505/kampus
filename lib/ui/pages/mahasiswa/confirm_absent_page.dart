@@ -8,6 +8,8 @@ import 'package:kampus/shared/shared_methods.dart';
 import 'package:kampus/shared/shared_values.dart';
 import 'package:kampus/shared/theme.dart';
 import 'package:kampus/ui/widgets/buttons.dart';
+import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class ConfirmAbsentPage extends StatefulWidget {
   const ConfirmAbsentPage({super.key});
@@ -21,6 +23,17 @@ class _ConfirmAbsentPageState extends State<ConfirmAbsentPage> {
       String idMakul, String idRuangan, String semester, String tahun) async {
     try {
       final idMahasiswa = await AuthService().getIdMahasiswa();
+      final deviceInfo = DeviceInfoPlugin();
+      String deviceId = '';
+
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        deviceId = androidInfo.id;
+      } else if (Platform.isIOS) {
+        IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+        deviceId = iosInfo.identifierForVendor ?? 'unknown';
+      }
+
       final res = await http.post(
         Uri.parse('$baseUrl/mahasiswa/postabsen'),
         body: {
@@ -29,6 +42,7 @@ class _ConfirmAbsentPageState extends State<ConfirmAbsentPage> {
           'idruangan': idRuangan,
           'tahunajaran': tahun,
           'semester': semester,
+          'consoleId': deviceId,
         },
       );
 
