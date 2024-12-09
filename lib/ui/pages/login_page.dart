@@ -1,6 +1,7 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:kampus/blocs/auth/auth_bloc.dart';
 import 'package:kampus/models/sign_in_form_model.dart';
 import 'package:kampus/services/auth_provider.dart';
@@ -11,6 +12,7 @@ import 'package:kampus/ui/widgets/forms.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:show_hide_password/show_hide_password.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -282,33 +284,75 @@ class _LoginPageState extends State<LoginPage> {
                       height: 16,
                     ),
                     // Note : Password Input
-                    CustomFormField(
-                      title: 'Password',
-                      obscureText: true,
-                      controller: passwordController,
+                    ShowHidePassword(
+                      hidePassword: true,
+                      passwordField: (hidePassword) {
+                        return TextField(
+                          keyboardType: TextInputType.text,
+                          controller: passwordController,
+                          obscureText: hidePassword,
+                          showCursor: false,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            hintText: 'Enter the password',
+                            hintStyle: Theme.of(context)
+                                .textTheme
+                                .labelMedium!
+                                .copyWith(
+                                  color: Colors.black38,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.black12, width: 1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.black38, width: 1),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            counterText: "",
+                          ),
+                          style:
+                              Theme.of(context).textTheme.labelLarge!.copyWith(
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                        );
+                      },
+                      iconSize: 18,
+                      visibleOffIcon: Iconsax.eye_slash,
+                      visibleOnIcon: Iconsax.eye,
                     ),
                     const SizedBox(
                       height: 8,
                     ),
-                    // Row(
-                    //   children: [
-                    //     const Spacer(),
-                    //     const SizedBox(
-                    //       height: 8,
-                    //     ),
-                    //     Column(
-                    //       children: [
-                    //         Text(
-                    //           'Forgot Password',
-                    //           style: redTextStyle.copyWith(
-                    //             fontWeight: semiBold,
-                    //             fontSize: 14,
-                    //           ),
-                    //         )
-                    //       ],
-                    //     )
-                    //   ],
-                    // ),
+                    Row(
+                      children: [
+                        const Spacer(),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, '/forgot-password');
+                              },
+                              child: Text(
+                                'Forgot Password',
+                                style: redTextStyle.copyWith(
+                                  fontWeight: semiBold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                     const SizedBox(
                       height: 30,
                     ),

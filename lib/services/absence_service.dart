@@ -38,7 +38,6 @@ class AbsenceService {
           'id': idmhs,
           'idmakul': idmakul,
           'idruangan': idruangan,
-          'tanggal': '2024-10-13'
         },
         headers: {
           'Authorization': token,

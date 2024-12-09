@@ -16,7 +16,8 @@ class AuthService {
 
       if (res.statusCode == 200) {
         UserModel user = UserModel.fromJson(jsonDecode(res.body));
-        user = user.copyWith(password: data.password);
+        user =
+            user.copyWith(password: data.password, consoleId: data.consoleId);
 
         await storeCredentialToLocal(user);
         return user;
@@ -56,6 +57,7 @@ class AuthService {
       await storage.write(key: 'email', value: user.email);
       await storage.write(key: 'password', value: user.password);
       await storage.write(key: 'id', value: user.id);
+      await storage.write(key: 'consoleId', value: user.consoleId);
     } catch (e) {
       rethrow;
     }
@@ -70,7 +72,9 @@ class AuthService {
         throw 'authenticated';
       } else {
         final SignInFormModel data = SignInFormModel(
-            email: values['email'], password: values['password']);
+            email: values['email'],
+            password: values['password'],
+            consoleId: values['consoleId']);
         return data;
       }
     } catch (e) {

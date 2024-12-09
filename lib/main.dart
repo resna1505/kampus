@@ -10,6 +10,7 @@ import 'package:kampus/ui/pages/mahasiswa/campus_news_detail_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/campus_news_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/card_mahasiswa_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/confirm_absent_page.dart';
+import 'package:kampus/ui/pages/mahasiswa/forget_password_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/home_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/input_krs_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/invoice_payment_page.dart';
@@ -21,6 +22,8 @@ import 'package:kampus/ui/pages/mahasiswa/manage_account_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/manage_profile_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/my_schedule_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/notification_page.dart';
+import 'package:kampus/ui/pages/mahasiswa/privacy_policy_page.dart';
+import 'package:kampus/ui/pages/mahasiswa/reset_password_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/thesis_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/todo_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/transcript_page.dart';
@@ -75,6 +78,9 @@ class MyApp extends StatelessWidget {
           '/my-schedule': (context) => const MySchedule(),
           '/manage-profile': (context) => const ManageProfile(),
           '/manage-account': (context) => const ManageAccount(),
+          '/privacy-policy': (context) => const PrivacyPolicy(),
+          '/forgot-password': (context) => const ForgetPassword(),
+          '/reset-password': (context) => const ResetPassword(),
           '/notification-detail': (context) => const NotificationDetail(),
           '/card-mahasiswa': (context) => const CardMahasiswaPage(),
           '/confirm-absent': (context) => const ConfirmAbsentPage(),

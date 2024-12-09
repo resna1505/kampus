@@ -89,6 +89,7 @@ class BuildAccounts extends StatelessWidget {
                       onTap: () {
                         // _openUrl(
                         //     "https://drive.google.com/drive/folders/1imK8yqWJlvN6RnIrv0uqenoDs1pG7RYB");
+                        Navigator.pushNamed(context, '/privacy-policy');
                       },
                       child: Container(
                         padding: const EdgeInsets.all(12),
@@ -109,7 +110,7 @@ class BuildAccounts extends StatelessWidget {
                               width: 18,
                             ),
                             Text(
-                              'User Guide',
+                              'Privacy Policy',
                               style: blackTextStyle.copyWith(
                                 fontSize: 16,
                               ),
