@@ -30,15 +30,24 @@ import 'package:kampus/ui/pages/mahasiswa/transcript_page.dart';
 import 'package:kampus/ui/pages/splash_page.dart';
 import 'package:kampus/ui/pages/mahasiswa/notification_detail.dart';
 import 'package:kampus/services/chat_provider.dart';
-import 'package:kampus/ui/widgets/firebase_options.dart';
+// import 'package:kampus/ui/widgets/firebase_options.dart';
 import 'package:provider/provider.dart';
 
 // void main() => runApp(const MyApp());
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await Firebase.initializeApp(
+  //   // name: 'Pwh FlutterFire',
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  // Cek apakah Firebase sudah diinisialisasi
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+        // options: DefaultFirebaseOptions.currentPlatform,
+        );
+  } else {
+    Firebase.app();
+  }
   runApp(MyApp());
 }
 

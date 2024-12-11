@@ -66,7 +66,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: StreamBuilder<QuerySnapshot>(
               stream: searchQuery.isEmpty
                   ? Stream.empty()
-                  : chatProvider.searchUsers(searchQuery),
+                  : chatProvider.searchUsers(searchQuery.toUpperCase()),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(

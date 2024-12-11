@@ -35,17 +35,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         '/reset-password',
         arguments: {'email': email},
       );
-      // Navigator.pushNamed(
-      //                           context,
-      //                           '/confirm-absent',
-      //                           arguments: {
-      //                             'namamakul': absenceMethod.namamakul,
-      //                             'idmakul': absenceMethod.idmakul,
-      //                             'idruangan': cameraScanResult,
-      //                             'semester': absenceMethod.semester,
-      //                             'tahun': absenceMethod.tahun,
-      //                           },
-      //                         );
 
       showSnackbar(
           context, 'Success', jsonDecode(res.body)['message'], 'success');

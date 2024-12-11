@@ -11,7 +11,7 @@ class AuthProvider with ChangeNotifier {
   bool get isSignedIn => currentUser != null;
 
   Future<void> signIn(String email, String password) async {
-    await _auth.signInWithEmailAndPassword(email: email, password: password);
+    await _auth.signInWithEmailAndPassword(email: email, password: 'password');
     notifyListeners();
   }
 
@@ -20,12 +20,12 @@ class AuthProvider with ChangeNotifier {
   //   UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
   //       email: email, password: password);
 
-  //       final imageurl = await _uploadImage(_image!);
+  //   // final imageurl = await _uploadImage(_image!);
   //   await _firestore.collection('users').doc(userCredential.user!.uid).set({
   //     'uid': userCredential.user!.uid,
   //     'name': name,
   //     'email': email,
-  //     'imageUrl': imageUrl,
+  //     // 'imageUrl': imageUrl,
   //   });
   //   notifyListeners();
   // }

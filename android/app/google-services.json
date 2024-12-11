@@ -1,32 +1,13 @@
 {
   "project_info": {
-    "project_number": "897687517302",
-    "project_id": "chatapp-91291",
-    "storage_bucket": "chatapp-91291.appspot.com"
+    "project_number": "856263630414",
+    "project_id": "chatappuniba",
+    "storage_bucket": "chatappuniba.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:897687517302:android:50a419d7d86000b4f50757",
-        "android_client_info": {
-          "package_name": "com.example.chatapp"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCvZ2Ncc_6prxvMAEPF6s0LuuPHZFeBuu8"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:897687517302:android:c131344458282a0df50757",
+        "mobilesdk_app_id": "1:856263630414:android:ec0f61a2247a82f2416d1f",
         "android_client_info": {
           "package_name": "com.mobile.uniba"
         }
@@ -34,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCvZ2Ncc_6prxvMAEPF6s0LuuPHZFeBuu8"
+          "current_key": "AIzaSyCVj5Ez4uaVpnrdR0-CD_GtsCHectCHpWQ"
         }
       ],
       "services": {
